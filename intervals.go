@@ -11,8 +11,8 @@ const (
 	defaultMaxHigh = math.MaxInt64
 )
 
+// Intervals is an interface to handle Interval structures discovering the existence of gaps or overlays
 type Intervals interface {
-	// Add appends a new interval
 	Add(itvl *Interval)
 
 	// Sort sorts the intervals list by the Low property (ascending)
@@ -31,6 +31,7 @@ type Intervals interface {
 	Print() string
 }
 
+// intervals implements Intervals interface
 type intervals struct {
 	Intervals []*Interval
 	MinLow    int
@@ -38,10 +39,12 @@ type intervals struct {
 	Sorted    bool
 }
 
+// NewIntervalsDefault is a constructor that returns an instance of the Intervals interface with default values
 func NewIntervalsDefault() Intervals {
 	return NewIntervals(defaultMinLow, defaultMaxHigh)
 }
 
+// NewIntervals is a constructor that returns an instance of the Intervals interface
 func NewIntervals(minLow int, maxHigh int) Intervals {
 	return &intervals{
 		MinLow:    minLow,
@@ -57,8 +60,13 @@ func (intvls *intervals) Add(itvl *Interval) {
 }
 
 func (intvls *intervals) FindIntervalsForValue(value int) []*Interval {
+	intvls.Sort()
 	var matches []*Interval
 	for _, intvl := range intvls.Intervals {
+		if intvl.Low > value {
+			// due to the intervals are sorted, we can confirm that we will not find more matches
+			break
+		}
 		if inBetweenInclusive(value, intvl.Low, intvl.High) {
 			matches = append(matches, intvl)
 		}
@@ -76,15 +84,18 @@ func (intvls *intervals) Sort() {
 func (intvls *intervals) Gaps() []*Interval {
 	intvls.Sort()
 	gaps := []*Interval{}
-	lastHigh := intvls.MinLow
+	lastMaxHigh := intvls.MinLow
 	for _, intvl := range intvls.Intervals {
-		if intvl.Low > lastHigh {
-			gaps = append(gaps, &Interval{Low: lastHigh, High: intvl.Low - 1})
+		if intvl.Low > lastMaxHigh {
+			gaps = append(gaps, &Interval{Low: lastMaxHigh, High: intvl.Low - 1})
 		}
-		lastHigh = intvl.High + 1
+		// lastHigh = intvl.High + 1
+		if intvl.High >= lastMaxHigh {
+			lastMaxHigh = intvl.High + 1
+		}
 	}
-	if lastHigh < intvls.MaxHigh {
-		gaps = append(gaps, &Interval{Low: lastHigh, High: intvls.MaxHigh})
+	if lastMaxHigh < intvls.MaxHigh {
+		gaps = append(gaps, &Interval{Low: lastMaxHigh, High: intvls.MaxHigh})
 	}
 	return gaps
 }
@@ -114,7 +125,7 @@ func (intvls *intervals) Overlapped() []*Interval {
 	return list
 }
 
-func (intvls *intervals) isAnOverlap(value int, overlapped []*Interval) bool {
+func (intvls *intervals) isOverlapping(value int, overlapped []*Interval) bool {
 	for _, ovrlp := range overlapped {
 		if inBetweenInclusive(value, ovrlp.Low, ovrlp.High) {
 			return true
@@ -130,7 +141,9 @@ func (intvls *intervals) Print() string {
 	emptySymbol := "◌"
 	fullSymbol := "◎"
 	overlapSymbol := "●"
-	separator := "║"
+	leadingSymbol := "├"
+	trailingSymbol := "┤"
+	separator := "|"
 
 	introText := fmt.Sprintf("\n==================================\n SUMMARY (minLow=%d, maxHigh=%d)\n==================================", intvls.MinLow, intvls.MaxHigh)
 	legend := fmt.Sprintf("\n • Legend: %v (empty), %v (full), %v (overlap)", emptySymbol, fullSymbol, overlapSymbol)
@@ -150,22 +163,22 @@ func (intvls *intervals) Print() string {
 		overlapText += fmt.Sprintf("[%d,%d]", ovrlp.Low, ovrlp.High)
 	}
 
-	for i, intvl := range intvls.Intervals {
-		if i != 0 {
+	for j, intvl := range intvls.Intervals {
+		if j != 0 {
 			intervalText += ", "
 		}
 		intervalText += fmt.Sprintf("[%d,%d]", intvl.Low, intvl.High)
 		for i := index; i < intvl.Low; i++ {
 			index++
 			graph += emptySymbol
-			if index%10 == 0 {
+			if index%blockSize == 0 {
 				graph += separator
 				numSeparators++
 			}
 		}
 
 		for i := index; i <= intvl.High; i++ {
-			if intvls.isAnOverlap(index, overlapped) {
+			if intvls.isOverlapping(index, overlapped) {
 				graph += overlapSymbol
 			} else {
 				graph += fullSymbol
@@ -185,14 +198,24 @@ func (intvls *intervals) Print() string {
 		gapsText += fmt.Sprintf("[%d,%d]", gap.Low, gap.High)
 	}
 
-	for i := index; i < intvls.MaxHigh; i++ {
+	for i := index + 1; i < intvls.MaxHigh; i++ {
 		graph += emptySymbol
+		if i%blockSize == 0 {
+			graph += separator
+			numSeparators++
+		}
 	}
-	axisLegend := fmt.Sprintf(" %v", intvls.MinLow)
-	for i := intvls.MinLow; i < intvls.MaxHigh+numSeparators-2; i++ {
-		axisLegend += " "
+	axisLegend := " "
+	numSeparators = 0
+	for i := intvls.MinLow; i < intvls.MaxHigh/blockSize; i++ {
+		mark := fmt.Sprintf("%d", i*blockSize)
+		axisLegend += mark
+		limit := (blockSize - len(mark)) + 1
+		for j := 0; j < limit; j++ {
+			axisLegend += " "
+		}
 	}
 	axisLegend += fmt.Sprintf("%v", intvls.MaxHigh)
-	graphText := fmt.Sprintf("\n\n%s\n╠%s╣", axisLegend, graph)
+	graphText := fmt.Sprintf("\n\n%s\n%s%s%s", axisLegend, leadingSymbol, graph, trailingSymbol)
 	return "\n" + introText + legend + intervalText + gapsText + overlapText + graphText + "\n"
 }
