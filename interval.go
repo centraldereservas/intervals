@@ -9,7 +9,7 @@ type Interval struct {
 }
 
 func (itvl Interval) String() string {
-	return fmt.Sprintf("(%v, %v) -> [%v]", itvl.Low, itvl.High, itvl.Object)
+	return fmt.Sprintf("(%v, %v)", itvl.Low, itvl.High)
 }
 
 // ByLow implements sort.Interface for []Interval based on the Low field.

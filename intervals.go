@@ -12,12 +12,25 @@ const (
 )
 
 type Intervals interface {
+	// Add appends a new interval
 	Add(itvl *Interval)
+
+	// Sort sorts the intervals list by the Low property (ascending)
 	Sort()
-	GetGaps() []*Interval
-	GetOverlapped() []*Interval
+
+	// Gaps first sorts (if necessary) and then returns the interval gaps
+	Gaps() []*Interval
+
+	// Overlapped first sorts (if necessary) and then returns the overlapped intervals
+	Overlapped() []*Interval
+
+	// FindIntervalsForValue returns all the intervals which contains the passed value
+	FindIntervalsForValue(value int) []*Interval
+
+	// Print first sorts (if necessary) and then displays graphically the interval sequence
 	Print() string
 }
+
 type intervals struct {
 	Intervals []*Interval
 	MinLow    int
@@ -43,6 +56,16 @@ func (intvls *intervals) Add(itvl *Interval) {
 	intvls.Sorted = false
 }
 
+func (intvls *intervals) FindIntervalsForValue(value int) []*Interval {
+	var matches []*Interval
+	for _, intvl := range intvls.Intervals {
+		if inBetweenInclusive(value, intvl.Low, intvl.High) {
+			matches = append(matches, intvl)
+		}
+	}
+	return matches
+}
+
 func (intvls *intervals) Sort() {
 	if !intvls.Sorted {
 		sort.Sort(ByLow(intvls.Intervals))
@@ -50,7 +73,7 @@ func (intvls *intervals) Sort() {
 	intvls.Sorted = true
 }
 
-func (intvls *intervals) GetGaps() []*Interval {
+func (intvls *intervals) Gaps() []*Interval {
 	intvls.Sort()
 	gaps := []*Interval{}
 	lastHigh := intvls.MinLow
@@ -66,7 +89,7 @@ func (intvls *intervals) GetGaps() []*Interval {
 	return gaps
 }
 
-func (intvls *intervals) GetOverlapped() []*Interval {
+func (intvls *intervals) Overlapped() []*Interval {
 	intvls.Sort()
 	list := []*Interval{}
 	lastMinLow := math.MaxInt64
@@ -102,11 +125,13 @@ func (intvls *intervals) isAnOverlap(value int, overlapped []*Interval) bool {
 
 func (intvls *intervals) Print() string {
 	intvls.Sort()
+
 	// Available Symbols:  ( ◯ ◌ ◍ ◎ ● ◉ ) , ( □ ■ ), ( ░ ▒ ▓ █ )
 	emptySymbol := "◌"
 	fullSymbol := "◎"
 	overlapSymbol := "●"
 	separator := "║"
+
 	introText := fmt.Sprintf("\n==================================\n SUMMARY (minLow=%d, maxHigh=%d)\n==================================", intvls.MinLow, intvls.MaxHigh)
 	legend := fmt.Sprintf("\n • Legend: %v (empty), %v (full), %v (overlap)", emptySymbol, fullSymbol, overlapSymbol)
 	intervalText := "\n • Intervals: "
@@ -117,7 +142,7 @@ func (intvls *intervals) Print() string {
 	blockSize := 10
 	numSeparators := 0
 
-	overlapped := intvls.GetOverlapped()
+	overlapped := intvls.Overlapped()
 	for i, ovrlp := range overlapped {
 		if i != 0 {
 			overlapText += ", "
@@ -152,7 +177,7 @@ func (intvls *intervals) Print() string {
 			}
 		}
 	}
-	gaps := intvls.GetGaps()
+	gaps := intvls.Gaps()
 	for i, gap := range gaps {
 		if i != 0 {
 			gapsText += ", "
@@ -169,84 +194,5 @@ func (intvls *intervals) Print() string {
 	}
 	axisLegend += fmt.Sprintf("%v", intvls.MaxHigh)
 	graphText := fmt.Sprintf("\n\n%s\n╠%s╣", axisLegend, graph)
-	return introText + legend + intervalText + gapsText + overlapText + graphText
+	return "\n" + introText + legend + intervalText + gapsText + overlapText + graphText + "\n"
 }
-
-// func (i *Intervals) Insert(intvl *Interval) {
-// 	i.Intervals = append(i.Intervals, intvl)
-
-// 	if i.Root == nil {
-// 		// create the root node
-// 		i.Root = &Node{Value: intvl, Left: nil, Right: nil}
-// 	} else {
-// 		currentNode := i.Root
-
-// 		// search for the next block or the last
-// 		for {
-// 			next := currentNode.Next()
-// 			if next == nil {
-// 				// append the new interval to the right of the last element
-// 				if intvl.Low >= currentNode.Value.Low {
-// 					currentNode.Right = &Node{Value: intvl, Left: currentNode, Right: nil}
-// 				} else {
-// 					newNode := &Node{Value: intvl, Left: currentNode.Left, Right: currentNode}
-// 					currentNode.Left = newNode
-// 				}
-// 				return
-// 			} else if currentNode.OverlapsWith(intvl) {
-// 				if intvl.Low >= next.Value.Low {
-// 					// insert the new interval to the right of the current node
-// 					newNode := &Node{Value: intvl, Left: currentNode, Right: currentNode.Right}
-// 					currentNode.Right = newNode
-// 				} else {
-// 					// insert the new interval to the left of the current node
-// 					newNode := &Node{Value: intvl, Left: currentNode.Left, Right: currentNode}
-// 					currentNode.Left = newNode
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
-// func (i *Intervals) appendInterval(intvl *Interval, n *Node) {
-// 	if intvl.Low >= n.Value.Low {
-// 		// insert the new interval to the right of the current node
-// 		newNode := &Node{Value: intvl, Left: currentNode, Right: currentNode.Right}
-// 		currentNode.Right = newNode
-// 	} else {
-// 		// insert the new interval to the left of the current node
-// 		newNode := &Node{Value: intvl, Left: currentNode.Left, Right: currentNode}
-// 		currentNode.Left = newNode
-// 	}
-// }
-
-// func (i *intervals) Print() string {
-// 	emptySymbol := "░"
-// 	fullSymbol := "█" // '▒' '▓'
-// 	separator := "║"
-// 	text := ""
-// 	graph := "╠"
-// 	index := 0
-// 	for i, intvl := range i.Intervals {
-// 		if i != 0 {
-// 			text += ", "
-// 		}
-// 		text += fmt.Sprintf("[%d,%d]", intvl.Low, intvl.High)
-// 		for i := index; i < intvl.Low; i++ {
-// 			index++
-// 			graph += emptySymbol
-// 			if index%10 == 0 {
-// 				graph += separator
-// 			}
-// 		}
-
-// 		for i := index; i < intvl.High; i++ {
-// 			index++
-// 			graph += fullSymbol
-// 			if index%10 == 0 {
-// 				graph += separator
-// 			}
-// 		}
-// 	}
-// 	return text + "\n" + graph + "╣"
-// }
