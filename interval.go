@@ -8,6 +8,7 @@ type Interval struct {
 	Object interface{}
 }
 
+// String implements Stringer.Interface Interval
 func (itvl Interval) String() string {
 	return fmt.Sprintf("(%v, %v)", itvl.Low, itvl.High)
 }
