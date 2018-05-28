@@ -12,21 +12,30 @@ func (intvls *intervals) calculateMerged() []*Interval {
 	list := []*Interval{}
 	var lastLow int
 	var lastHigh int
+	pendingToAdd := false
 	for i, intvl := range intvls.Intervals {
 		if i == 0 {
 			lastLow = intvl.Low
 			lastHigh = intvl.High
 			continue
 		}
-		if inBetweenInclusive(intvl.Low, lastLow, lastHigh) {
-			// because the intervals are previously sorted, we just need to take care of the High value
+		if isLowInBetween(intvl.Low, intvl.High, lastLow, lastHigh) || isHighInBetween(intvl.Low, intvl.High, lastLow, lastHigh) {
+			if intvl.Low < lastLow {
+				lastLow = intvl.Low
+			}
 			if intvl.High > lastHigh {
 				lastHigh = intvl.High
 			}
+			pendingToAdd = true
 			continue
 		}
 		list = append(list, &Interval{Low: lastLow, High: lastHigh})
+		lastLow = intvl.Low
+		lastHigh = intvl.High
+		pendingToAdd = false
 	}
-	list = append(list, &Interval{Low: lastLow, High: lastHigh})
+	if pendingToAdd == true {
+		list = append(list, &Interval{Low: lastLow, High: lastHigh})
+	}
 	return list
 }

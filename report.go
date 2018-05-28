@@ -28,24 +28,35 @@ func newSymbols() symbols {
 func (intvls *intervals) Report() string {
 	intvls.Sort()
 	symbols := newSymbols()
-	intro := intvls.buildHeading(symbols)
-	index := intvls.MinLow
-	numSeparators := 0
+	intro := intvls.buildHeading()
+	legend := intvls.buildLegend(symbols)
 	overlapText := intvls.reportOverlapped()
-	intervalText := ""
-	graph := ""
-	intervalText, index, graph, numSeparators = intvls.reportIntervals(index, symbols, numSeparators)
 	gapsText := intvls.reportGaps()
-	graph, numSeparators, index = intvls.fillUntilTheEnd(index, symbols, graph, numSeparators)
+	mergeText := intvls.reportMerged()
+	intervalText, graph := intvls.buildGraph(symbols)
 	axisLegend := intvls.buildAxisLegend()
-	graphText := fmt.Sprintf("\n\n%s\n%s%s%s", axisLegend, symbols.leadingSymbol, graph, symbols.trailingSymbol)
-	return "\n" + intro + intervalText + gapsText + overlapText + graphText + "\n"
+	graphWithLegend := fmt.Sprintf("\n\n%s\n%s%s%s", axisLegend, symbols.leadingSymbol, graph, symbols.trailingSymbol)
+	return "\n" + intro + intervalText + gapsText + overlapText + mergeText + legend + graphWithLegend + "\n"
 }
 
-func (intvls *intervals) buildHeading(symbols symbols) string {
+func (intvls *intervals) buildGraph(symbols symbols) (string, string) {
+	index := intvls.MinLow
+	numSeparators := 0
+	graph := ""
+	intervalText := ""
+	intervalText, index, graph, numSeparators = intvls.reportIntervals(index, symbols, numSeparators)
+	graph, numSeparators, index = intvls.fillUntilTheEnd(index, symbols, graph, numSeparators)
+	return intervalText, graph
+}
+
+func (intvls *intervals) buildHeading() string {
 	introText := fmt.Sprintf("\n==================================\n REPORT (minLow=%d, maxHigh=%d)\n==================================", intvls.MinLow, intvls.MaxHigh)
+	return introText
+}
+
+func (intvls *intervals) buildLegend(symbols symbols) string {
 	legend := fmt.Sprintf("\n • Legend: %v (empty), %v (full), %v (overlap)", symbols.emptySymbol, symbols.fullSymbol, symbols.overlapSymbol)
-	return introText + legend
+	return legend
 }
 
 func (intvls *intervals) reportIntervals(index int, symbols symbols, numSeparators int) (string, int, string, int) {
@@ -66,7 +77,7 @@ func (intvls *intervals) reportIntervals(index int, symbols symbols, numSeparato
 		}
 
 		for i := index; i <= intvl.High; i++ {
-			if intvls.isOverlapping(index, intvls.OverlappedList) {
+			if intvls.valueIsOverlapping(index, intvls.OverlappedList) {
 				graph += symbols.overlapSymbol
 			} else {
 				graph += symbols.fullSymbol
@@ -114,6 +125,18 @@ func (intvls *intervals) reportGaps() string {
 		gapsText += fmt.Sprintf("[%d,%d]", gap.Low, gap.High)
 	}
 	return gapsText
+}
+
+func (intvls *intervals) reportMerged() string {
+	mergedText := "\n • Merged: "
+	merged := intvls.Merge()
+	for i, merge := range merged {
+		if i != 0 {
+			mergedText += ", "
+		}
+		mergedText += fmt.Sprintf("[%d,%d]", merge.Low, merge.High)
+	}
+	return mergedText
 }
 
 func (intvls *intervals) buildAxisLegend() string {
