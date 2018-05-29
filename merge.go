@@ -10,9 +10,12 @@ func (intvls *intervals) Merge() []*Interval {
 func (intvls *intervals) calculateMerged() []*Interval {
 	intvls.Sort()
 	list := []*Interval{}
+	if len(intvls.Intervals) == 0 {
+		return list
+	}
+
 	var lastLow int
 	var lastHigh int
-	pendingToAdd := false
 	for i, intvl := range intvls.Intervals {
 		if i == 0 {
 			lastLow = intvl.Low
@@ -26,16 +29,12 @@ func (intvls *intervals) calculateMerged() []*Interval {
 			if intvl.High > lastHigh {
 				lastHigh = intvl.High
 			}
-			pendingToAdd = true
 			continue
 		}
 		list = append(list, &Interval{Low: lastLow, High: lastHigh})
 		lastLow = intvl.Low
 		lastHigh = intvl.High
-		pendingToAdd = false
 	}
-	if pendingToAdd == true {
-		list = append(list, &Interval{Low: lastLow, High: lastHigh})
-	}
+	list = append(list, &Interval{Low: lastLow, High: lastHigh})
 	return list
 }

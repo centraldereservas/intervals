@@ -19,6 +19,9 @@ type Intervals interface {
 	// HasGaps returns true if exists gaps for the introduced intervals between MinLow and MaxHigh
 	HasGaps() bool
 
+	// Get first sorts (if necessary) and then returns the interval list
+	Get() []*Interval
+
 	// Gaps first sorts (if necessary) and then returns the interval gaps
 	Gaps() []*Interval
 

@@ -24,8 +24,8 @@ func (intvls *intervals) calculateOverlapped() []*Interval {
 	lastMaxHigh := math.MinInt64
 	for i, intvl := range intvls.Intervals {
 		if i > 0 {
-			lowInBetween := isLowInBetween(lastMinLow, lastMaxHigh, intvl.Low, intvl.High)   //inBetweenInclusive(lastMinLow, intvl.Low, intvl.High) || inBetweenInclusive(intvl.Low, lastMinLow, lastMaxHigh)
-			highInBetween := isHighInBetween(lastMinLow, lastMaxHigh, intvl.Low, intvl.High) //inBetweenInclusive(lastMaxHigh, intvl.Low, intvl.High) || inBetweenInclusive(intvl.High, lastMinLow, lastMaxHigh)
+			lowInBetween := isLowInBetween(lastMinLow, lastMaxHigh, intvl.Low, intvl.High)
+			highInBetween := isHighInBetween(lastMinLow, lastMaxHigh, intvl.Low, intvl.High)
 			if lowInBetween || highInBetween {
 				greaterLow := max(intvl.Low, lastMinLow)
 				lowerHigh := min(intvl.High, lastMaxHigh)

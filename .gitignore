@@ -3,3 +3,5 @@
 .vscode/
 
 debug.test
+example/debug
+example/out.png
