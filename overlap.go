@@ -1,6 +1,9 @@
 package interval
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func (intvls *intervals) HasOverlapped() bool {
 	intvls.Overlapped()
@@ -28,12 +31,17 @@ func (intvls *intervals) calculateOverlapped() []*Interval {
 
 	lastMinLow := math.MaxInt64
 	lastMaxHigh := math.MinInt64
-	for i, intvl := range intvls.Intervals {
+	firstInitDone := false
+	for _, intvl := range intvls.Intervals {
 		// convert if necessary exclusive low/high values into inclusive ones
-		low, high := intvls.getInclusives(intvl.Low, intvl.High)
+		low, high, err := intvls.getInclusives(intvl.Low, intvl.High)
+		if err != nil {
+			fmt.Printf("calculateOverlapped - unable to get inclusives: %v", err)
+			continue
+		}
 
 		// for the first iteration make no sense those operations
-		if i > 0 {
+		if firstInitDone {
 			// check if the front or back side of the current segment overlaps with the previous one
 			lowInBetween := isLowInBetweenInclusive(lastMinLow, lastMaxHigh, low, high)
 			highInBetween := isHighInBetweenInclusive(lastMinLow, lastMaxHigh, low, high)
@@ -51,6 +59,7 @@ func (intvls *intervals) calculateOverlapped() []*Interval {
 		if high > lastMaxHigh {
 			lastMaxHigh = high
 		}
+		firstInitDone = true
 	}
 	return list
 }

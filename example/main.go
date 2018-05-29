@@ -30,6 +30,11 @@ const (
 	PlotTypeMerged
 )
 
+type Superplot struct {
+	Plot        *plot.Plot
+	NumElements int
+}
+
 var (
 	openBracket      = "["
 	closeBracket     = "]"
@@ -119,7 +124,7 @@ func convertToPlotterXYs(intervals []*interval.Interval) plotter.XYs {
 	return pxys
 }
 
-func alignPlots(plotItems []*plot.Plot) *vgimg.Canvas {
+func alignPlots(plotItems []*Superplot) *vgimg.Canvas {
 	rows, cols := len(plotItems), 1
 	plots := make([][]*plot.Plot, rows)
 	for j := 0; j < rows; j++ {
@@ -128,10 +133,10 @@ func alignPlots(plotItems []*plot.Plot) *vgimg.Canvas {
 			p := plotItems[j]
 
 			// make sure the horizontal scales match
-			p.X.Min = MinX
-			p.X.Max = MaxX
+			p.Plot.X.Min = MinX
+			p.Plot.X.Max = MaxX
 
-			plots[j][i] = p
+			plots[j][i] = p.Plot
 		}
 	}
 
@@ -171,7 +176,7 @@ func createFileFromCanvas(path string, img *vgimg.Canvas) error {
 	return nil
 }
 
-func createPlot(title string, xys plotter.XYs, plotType PlotType) (*plot.Plot, error) {
+func createPlot(title string, xys plotter.XYs, plotType PlotType) (*Superplot, error) {
 	p, err := plot.New()
 	if err != nil {
 		return nil, fmt.Errorf("could not create plot: %v", err)
@@ -181,15 +186,15 @@ func createPlot(title string, xys plotter.XYs, plotType PlotType) (*plot.Plot, e
 	p.Add(plotter.NewGrid())
 	p.Title.Text = title
 	p.HideY()
-	// p.X.Label.Text = "values"
 	p.X.Padding = vg.Length(5)
 	p.Y.Padding = vg.Length(20)
+
 	plotIntervals(p, plotType, xys)
-	return p, nil
+	return &Superplot{p, xys.Len()}, nil
 }
 
 func plotData(path string, intervals interval.Intervals) error {
-	plots := []*plot.Plot{}
+	plots := []*Superplot{}
 
 	// create Intervals plot
 	xysIntervals := convertToPlotterXYs(intervals.Get())

@@ -1,5 +1,7 @@
 package interval
 
+import "fmt"
+
 func (intvls *intervals) FindIntervalsForValue(value int) []*Interval {
 	// sort intervals (if necessary)
 	intvls.Sort()
@@ -7,7 +9,11 @@ func (intvls *intervals) FindIntervalsForValue(value int) []*Interval {
 	var matches []*Interval
 	for _, intvl := range intvls.Intervals {
 		// convert if necessary exclusive low/high values into inclusive ones
-		low, high := intvls.getInclusives(intvl.Low, intvl.High)
+		low, high, err := intvls.getInclusives(intvl.Low, intvl.High)
+		if err != nil {
+			fmt.Printf("FindIntervalsForValue - unable to get inclusives: %v", err)
+			continue
+		}
 
 		// check if we have to stop searching
 		if low > value {

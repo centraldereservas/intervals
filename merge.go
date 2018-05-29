@@ -1,5 +1,7 @@
 package interval
 
+import "github.com/labstack/gommon/log"
+
 func (intvls *intervals) Merge() []*Interval {
 	if intvls.MergeList == nil {
 		intvls.MergeList = intvls.calculateMerged()
@@ -18,14 +20,20 @@ func (intvls *intervals) calculateMerged() []*Interval {
 
 	var currentMinLow int
 	var currentMaxHigh int
-	for i, intvl := range intvls.Intervals {
+	firstInitDone := false
+	for _, intvl := range intvls.Intervals {
 		// convert if necessary exclusive low/high values into inclusive ones
-		low, high := intvls.getInclusives(intvl.Low, intvl.High)
+		low, high, err := intvls.getInclusives(intvl.Low, intvl.High)
+		if err != nil {
+			log.Errorf("calculateMerged - unable to get inclusives: %v", err)
+			continue
+		}
 
 		// in the first iteration it's for sure that don't exists merge, we just initialize variables
-		if i == 0 {
+		if !firstInitDone {
 			currentMinLow = low
 			currentMaxHigh = high
+			firstInitDone = true
 			continue
 		}
 
