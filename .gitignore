@@ -4,4 +4,4 @@
 
 debug.test
 example/debug
-example/out.png
+example/*.png

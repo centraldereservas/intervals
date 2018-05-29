@@ -21,6 +21,26 @@ const (
 	MaxX = 40
 )
 
+type PlotType int
+
+const (
+	PlotTypeIntervals PlotType = iota
+	PlotTypeGaps
+	PlotTypeOverlapped
+	PlotTypeMerged
+)
+
+var (
+	openBracket      = "["
+	closeBracket     = "]"
+	openParenthesis  = "("
+	closeParenthesis = ")"
+	intervalOpening  = openBracket
+	intervalClosing  = closeBracket
+	lowInclusive     bool
+	highInclusive    bool
+)
+
 func main() {
 	filename := "data.txt"
 	xys, err := readData(filename)
@@ -47,12 +67,17 @@ func readData(path string) ([]xy, error) {
 	// read line by line using a scanner (because we don't know if the file will be huge)
 	s := bufio.NewScanner(f)
 	for s.Scan() {
-		var x, y int
-		_, err := fmt.Sscanf(s.Text(), "%d,%d", &x, &y)
+		var low, high int
+		_, err := fmt.Sscanf(s.Text(), "%d,%d", &low, &high)
 		if err != nil {
 			log.Printf("discarding bad data point %v: %v", s.Text(), err)
+			continue
 		}
-		xys = append(xys, xy{x, y})
+		if low > high {
+			log.Printf("discarding bad data point (low, high)=(%v): low can not be greater than high", s.Text())
+			continue
+		}
+		xys = append(xys, xy{low, high})
 	}
 	if err := s.Err(); err != nil {
 		return nil, fmt.Errorf("could not scan: %v", err)
@@ -61,7 +86,24 @@ func readData(path string) ([]xy, error) {
 }
 
 func initIntervals(xys []xy) interval.Intervals {
-	intervals := interval.NewIntervals(MinX, MaxX)
+	intervals := interval.NewIntervals(MinX, MaxX, true, true)
+
+	if intervals.IsLowInclusive() {
+		intervalOpening = "["
+		lowInclusive = true
+	} else {
+		intervalOpening = "("
+		lowInclusive = false
+	}
+
+	if intervals.IsHighInclusive() {
+		intervalClosing = "]"
+		highInclusive = true
+	} else {
+		intervalClosing = ")"
+		highInclusive = false
+	}
+
 	for _, xy := range xys {
 		intervals.Add(&interval.Interval{Low: xy.x, High: xy.y})
 	}
@@ -93,7 +135,7 @@ func alignPlots(plotItems []*plot.Plot) *vgimg.Canvas {
 		}
 	}
 
-	img := vgimg.New(vg.Points(512), vg.Points(float64(128*rows)))
+	img := vgimg.New(vg.Points(512), vg.Points(float64(200*rows)))
 	dc := draw.New(img)
 
 	t := draw.Tiles{
@@ -129,7 +171,7 @@ func createFileFromCanvas(path string, img *vgimg.Canvas) error {
 	return nil
 }
 
-func createPlot(title string, xys plotter.XYs) (*plot.Plot, error) {
+func createPlot(title string, xys plotter.XYs, plotType PlotType) (*plot.Plot, error) {
 	p, err := plot.New()
 	if err != nil {
 		return nil, fmt.Errorf("could not create plot: %v", err)
@@ -142,7 +184,7 @@ func createPlot(title string, xys plotter.XYs) (*plot.Plot, error) {
 	// p.X.Label.Text = "values"
 	p.X.Padding = vg.Length(5)
 	p.Y.Padding = vg.Length(20)
-	plotIntervals(p, xys)
+	plotIntervals(p, plotType, xys)
 	return p, nil
 }
 
@@ -151,7 +193,7 @@ func plotData(path string, intervals interval.Intervals) error {
 
 	// create Intervals plot
 	xysIntervals := convertToPlotterXYs(intervals.Get())
-	p1, err := createPlot("Intervals", xysIntervals)
+	p1, err := createPlot("Intervals", xysIntervals, PlotTypeIntervals)
 	if err != nil {
 		return fmt.Errorf("could not create plot: %v", err)
 	}
@@ -159,7 +201,7 @@ func plotData(path string, intervals interval.Intervals) error {
 
 	// create Gaps plot
 	xysGaps := convertToPlotterXYs(intervals.Gaps())
-	p2, err := createPlot("Gaps", xysGaps)
+	p2, err := createPlot("Gaps", xysGaps, PlotTypeGaps)
 	if err != nil {
 		return fmt.Errorf("could not create plot: %v", err)
 	}
@@ -167,7 +209,7 @@ func plotData(path string, intervals interval.Intervals) error {
 
 	// create Overlapped `plot
 	xysOverlapped := convertToPlotterXYs(intervals.Overlapped())
-	p3, err := createPlot("Overlapped", xysOverlapped)
+	p3, err := createPlot("Overlapped", xysOverlapped, PlotTypeOverlapped)
 	if err != nil {
 		return fmt.Errorf("could not create plot: %v", err)
 	}
@@ -175,7 +217,7 @@ func plotData(path string, intervals interval.Intervals) error {
 
 	// create Merged plot
 	xysMerged := convertToPlotterXYs(intervals.Merge())
-	p4, err := createPlot("Merged", xysMerged)
+	p4, err := createPlot("Merged", xysMerged, PlotTypeMerged)
 	if err != nil {
 		return fmt.Errorf("could not create plot: %v", err)
 	}
@@ -190,16 +232,71 @@ func plotData(path string, intervals interval.Intervals) error {
 	return nil
 }
 
-func plotIntervals(p *plot.Plot, xys plotter.XYs) error {
+func plotIntervals(p *plot.Plot, plotType PlotType, xys plotter.XYs) error {
 	var ps []plot.Plotter
 	colors := getColors()
 	numColors := len(colors)
+
+	crossShape := draw.CrossGlyph{}
+	ringShape := draw.RingGlyph{}
+	legendWithCrossShape := false
+	legendWithRingShape := false
 	for i, xy := range xys {
-		label := fmt.Sprintf("(%v,%v)", xy.X, xy.Y)
-		pXYs := plotter.XYs{{xy.X, float64(i)}, {xy.Y, float64(i)}}
+		pXYLow := struct{ X, Y float64 }{xy.X, float64(i)}
+		pXYHigh := struct{ X, Y float64 }{xy.Y, float64(i)}
+		pXYs := plotter.XYs{pXYLow, pXYHigh}
 		color := colors[i%numColors]
 
-		s, err := plotter.NewScatter(pXYs)
+		var s1, s2 *plotter.Scatter
+		var err error
+		label := ""
+		if plotType == PlotTypeIntervals {
+			label = fmt.Sprintf("%s%v,%v%s", intervalOpening, xy.X, xy.Y, intervalClosing)
+			s1, err = plotter.NewScatter(plotter.XYs{pXYLow})
+			if err != nil {
+				return fmt.Errorf("unable to create new scatter: %v", err)
+			}
+			if !lowInclusive {
+				s1.GlyphStyle.Shape = crossShape
+				if !legendWithCrossShape {
+					p.Legend.Add("Exclusive", s1)
+					legendWithCrossShape = true
+				}
+			} else {
+				s1.GlyphStyle.Shape = ringShape
+				if !legendWithRingShape {
+					p.Legend.Add("Inclusive", s1)
+					legendWithRingShape = true
+				}
+			}
+
+			s2, err = plotter.NewScatter(plotter.XYs{pXYHigh})
+			if err != nil {
+				return fmt.Errorf("unable to create new scatter: %v", err)
+			}
+			if !highInclusive {
+				s2.GlyphStyle.Shape = crossShape
+				if !legendWithCrossShape {
+					p.Legend.Add("Exclusive", s2)
+					legendWithCrossShape = true
+				}
+			} else {
+				s2.GlyphStyle.Shape = ringShape
+				if !legendWithRingShape {
+					p.Legend.Add("Inclusive", s2)
+					legendWithRingShape = true
+				}
+			}
+		} else {
+			label = fmt.Sprintf("%s%v,%v%s", openBracket, xy.X, xy.Y, closeBracket)
+			s1, err = plotter.NewScatter(pXYs)
+			if err != nil {
+				return fmt.Errorf("unable to create new scatter: %v", err)
+			}
+			if !lowInclusive && !highInclusive {
+				s1.GlyphStyle.Shape = crossShape
+			}
+		}
 
 		if xy.X != xy.Y {
 			l, err := plotter.NewLine(pXYs)
@@ -211,15 +308,20 @@ func plotIntervals(p *plot.Plot, xys plotter.XYs) error {
 			ps = append(ps, l)
 			p.Legend.Add(label, l)
 		} else {
-			s.Color = color
-			p.Legend.Add(label, s)
+			s1.Color = color
+			if s2 != nil {
+				s2.Color = color
+			}
+			p.Legend.Add(label, s1)
 		}
 
 		if err != nil {
 			return fmt.Errorf("could not create a new scatter: %v", err)
 		}
-		ps = append(ps, s)
-
+		ps = append(ps, s1)
+		if s2 != nil {
+			ps = append(ps, s2)
+		}
 	}
 	p.Legend.Left = false
 	p.Add(ps...)

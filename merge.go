@@ -8,33 +8,66 @@ func (intvls *intervals) Merge() []*Interval {
 }
 
 func (intvls *intervals) calculateMerged() []*Interval {
-	intvls.Sort()
 	list := []*Interval{}
 	if len(intvls.Intervals) == 0 {
 		return list
 	}
 
-	var lastLow int
-	var lastHigh int
+	// sort intervals (if necessary)
+	intvls.Sort()
+
+	var currentMinLow int
+	var currentMaxHigh int
 	for i, intvl := range intvls.Intervals {
+		// convert if necessary exclusive low/high values into inclusive ones
+		low, high := intvls.getInclusives(intvl.Low, intvl.High)
+
+		// in the first iteration it's for sure that don't exists merge, we just initialize variables
 		if i == 0 {
-			lastLow = intvl.Low
-			lastHigh = intvl.High
+			currentMinLow = low
+			currentMaxHigh = high
 			continue
 		}
-		if isLowInBetween(intvl.Low, intvl.High, lastLow, lastHigh) || isHighInBetween(intvl.Low, intvl.High, lastLow, lastHigh) {
-			if intvl.Low < lastLow {
-				lastLow = intvl.Low
+
+		// in case the current interval is overlapped or consecutive to the previous one, we need to update variables
+		// and keep going and process the next interval
+		if areSegmentsConsecutivesOrOverlapped(low, high, currentMinLow, currentMaxHigh) {
+			// update control variables if necessary
+			if low < currentMinLow {
+				currentMinLow = low
 			}
-			if intvl.High > lastHigh {
-				lastHigh = intvl.High
+			if high > currentMaxHigh {
+				currentMaxHigh = high
 			}
 			continue
 		}
-		list = append(list, &Interval{Low: lastLow, High: lastHigh})
-		lastLow = intvl.Low
-		lastHigh = intvl.High
+
+		// here the segments are not consecutive or overlapped so we close this merged segment (add to the list)
+		list = append(list, &Interval{Low: currentMinLow, High: currentMaxHigh})
+
+		// update control variables
+		currentMinLow = low
+		currentMaxHigh = high
 	}
-	list = append(list, &Interval{Low: lastLow, High: lastHigh})
+	// the last segment is pending to be added to the list
+	list = append(list, &Interval{Low: currentMinLow, High: currentMaxHigh})
 	return list
+}
+
+func areSegmentsOverlapped(low, high, lastLow, lastHigh int) bool {
+	if isLowInBetweenInclusive(low, high, lastLow, lastHigh) {
+		return true
+	}
+	if isHighInBetweenInclusive(low, high, lastLow, lastHigh) {
+		return true
+	}
+	return false
+}
+
+func areSegmentsConsecutives(low, high, lastLow, lastHigh int) bool {
+	return ((lastHigh + 1) == low) || ((high + 1) == lastLow)
+}
+
+func areSegmentsConsecutivesOrOverlapped(low, high, lastLow, lastHigh int) bool {
+	return areSegmentsOverlapped(low, high, lastLow, lastHigh) || areSegmentsConsecutives(low, high, lastLow, lastHigh)
 }

@@ -18,25 +18,38 @@ func (intvls *intervals) Overlapped() []*Interval {
 }
 
 func (intvls *intervals) calculateOverlapped() []*Interval {
-	intvls.Sort()
 	list := []*Interval{}
+	if len(intvls.Intervals) == 0 {
+		return list
+	}
+
+	// sort intervals (if necessary)
+	intvls.Sort()
+
 	lastMinLow := math.MaxInt64
 	lastMaxHigh := math.MinInt64
 	for i, intvl := range intvls.Intervals {
+		// convert if necessary exclusive low/high values into inclusive ones
+		low, high := intvls.getInclusives(intvl.Low, intvl.High)
+
+		// for the first iteration make no sense those operations
 		if i > 0 {
-			lowInBetween := isLowInBetween(lastMinLow, lastMaxHigh, intvl.Low, intvl.High)
-			highInBetween := isHighInBetween(lastMinLow, lastMaxHigh, intvl.Low, intvl.High)
+			// check if the front or back side of the current segment overlaps with the previous one
+			lowInBetween := isLowInBetweenInclusive(lastMinLow, lastMaxHigh, low, high)
+			highInBetween := isHighInBetweenInclusive(lastMinLow, lastMaxHigh, low, high)
 			if lowInBetween || highInBetween {
-				greaterLow := max(intvl.Low, lastMinLow)
-				lowerHigh := min(intvl.High, lastMaxHigh)
-				list = append(list, &Interval{Low: greaterLow, High: lowerHigh})
+				// extract which part is overlapped, create a new interval and add it to the list
+				biggestLow := max(low, lastMinLow)
+				smallestHigh := min(high, lastMaxHigh)
+				list = append(list, &Interval{Low: biggestLow, High: smallestHigh})
 			}
 		}
-		if intvl.Low < lastMinLow {
-			lastMinLow = intvl.Low
+		// update control variables (if necessary)
+		if low < lastMinLow {
+			lastMinLow = low
 		}
-		if intvl.High > lastMaxHigh {
-			lastMaxHigh = intvl.High
+		if high > lastMaxHigh {
+			lastMaxHigh = high
 		}
 	}
 	return list
@@ -44,7 +57,7 @@ func (intvls *intervals) calculateOverlapped() []*Interval {
 
 func (intvls *intervals) valueIsOverlapping(value int, overlapped []*Interval) bool {
 	for _, ovrlp := range overlapped {
-		if inBetweenInclusive(value, ovrlp.Low, ovrlp.High) {
+		if inBetween(value, ovrlp.Low, ovrlp.High, intvls.LowInclusive, intvls.HighInclusive) {
 			return true
 		}
 	}

@@ -16,19 +16,33 @@ func (intvls *intervals) Gaps() []*Interval {
 }
 
 func (intvls *intervals) calculateGaps() []*Interval {
+	list := []*Interval{}
+	if len(intvls.Intervals) == 0 {
+		return list
+	}
+
+	// sort intervals (if necessary)
 	intvls.Sort()
-	gaps := []*Interval{}
-	lastMaxHigh := intvls.MinLow
+
+	gapThreshold := intvls.MinLow
 	for _, intvl := range intvls.Intervals {
-		if intvl.Low > lastMaxHigh {
-			gaps = append(gaps, &Interval{Low: lastMaxHigh, High: intvl.Low - 1})
+		// convert if necessary exclusive low/high values into inclusive ones
+		low, high := intvls.getInclusives(intvl.Low, intvl.High)
+
+		// if the current Low is higher than the last maximal High, means that there is a gap so we add this gap to the list
+		if low > gapThreshold {
+			list = append(list, &Interval{Low: gapThreshold, High: low - 1})
 		}
-		if intvl.High >= lastMaxHigh {
-			lastMaxHigh = intvl.High + 1
+
+		// update if necessary the threshold for the next gap
+		if high >= gapThreshold {
+			gapThreshold = high + 1
 		}
 	}
-	if lastMaxHigh < intvls.MaxHigh {
-		gaps = append(gaps, &Interval{Low: lastMaxHigh, High: intvls.MaxHigh})
+
+	// if intvls.Intervals haven't covered all the range until the end, we need to fill the rest until the end as a gap
+	if gapThreshold < intvls.MaxHigh {
+		list = append(list, &Interval{Low: gapThreshold, High: intvls.MaxHigh})
 	}
-	return gaps
+	return list
 }
