@@ -13,7 +13,8 @@ const (
 
 // Intervals is an interface to handle Interval structures discovering the existence of gaps or overlays
 type Intervals interface {
-	Add(itvl *Interval)
+	// Add appends a new interval to the list. If the interval range (low, high) is invalid, it returns an error
+	Add(itvl *Interval) error
 
 	// Sort sorts the intervals list by the Low property (ascending)
 	Sort()

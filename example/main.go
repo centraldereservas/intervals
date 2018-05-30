@@ -110,7 +110,10 @@ func initIntervals(xys []xy) interval.Intervals {
 	}
 
 	for _, xy := range xys {
-		intervals.Add(&interval.Interval{Low: xy.x, High: xy.y})
+		err := intervals.Add(&interval.Interval{Low: xy.x, High: xy.y})
+		if err != nil {
+			fmt.Printf("invalid interval discarded: %v\n", err)
+		}
 	}
 	intervals.Sort()
 	return intervals
