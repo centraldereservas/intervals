@@ -19,9 +19,6 @@ func (intvls *intervals) Gaps() []*Interval {
 
 func (intvls *intervals) calculateGaps() []*Interval {
 	list := []*Interval{}
-	if len(intvls.Intervals) == 0 {
-		return list
-	}
 
 	// sort intervals (if necessary)
 	intvls.Sort()
@@ -47,7 +44,7 @@ func (intvls *intervals) calculateGaps() []*Interval {
 	}
 
 	// if intvls.Intervals haven't covered all the range until the end, we need to fill the rest until the end as a gap
-	if gapThreshold < intvls.MaxHigh {
+	if gapThreshold <= intvls.MaxHigh {
 		list = append(list, &Interval{Low: gapThreshold, High: intvls.MaxHigh})
 	}
 	return list

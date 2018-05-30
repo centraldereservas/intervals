@@ -8,7 +8,7 @@ import (
 )
 
 func TestInsert(t *testing.T) {
-	itvls := interval.NewIntervals(0, 100)
+	itvls := interval.NewIntervals(0, 100, true, true)
 
 	itvls.Add(&interval.Interval{Low: 5, High: 7})
 	itvls.Add(&interval.Interval{Low: 2, High: 4})
@@ -33,7 +33,7 @@ func TestInsert(t *testing.T) {
 }
 
 func TestFindIntervalsForValue(t *testing.T) {
-	itvls := interval.NewIntervals(0, 100)
+	itvls := interval.NewIntervals(0, 100, true, true)
 
 	itvls.Add(&interval.Interval{Low: 5, High: 7})
 	itvls.Add(&interval.Interval{Low: 2, High: 4})

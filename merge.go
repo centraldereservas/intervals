@@ -1,6 +1,6 @@
 package interval
 
-import "github.com/labstack/gommon/log"
+import "fmt"
 
 func (intvls *intervals) Merge() []*Interval {
 	if intvls.MergeList == nil {
@@ -25,7 +25,7 @@ func (intvls *intervals) calculateMerged() []*Interval {
 		// convert if necessary exclusive low/high values into inclusive ones
 		low, high, err := intvls.getInclusives(intvl.Low, intvl.High)
 		if err != nil {
-			log.Errorf("calculateMerged - unable to get inclusives: %v", err)
+			fmt.Printf("calculateMerged - unable to get inclusives: %v", err)
 			continue
 		}
 
@@ -62,6 +62,14 @@ func (intvls *intervals) calculateMerged() []*Interval {
 	return list
 }
 
+func areSegmentsConsecutivesOrOverlapped(low, high, lastLow, lastHigh int) bool {
+	return areSegmentsOverlapped(low, high, lastLow, lastHigh) || areSegmentsConsecutives(low, high, lastLow, lastHigh)
+}
+
+func areSegmentsConsecutives(low, high, lastLow, lastHigh int) bool {
+	return ((lastHigh + 1) == low) || ((high + 1) == lastLow)
+}
+
 func areSegmentsOverlapped(low, high, lastLow, lastHigh int) bool {
 	if isLowInBetweenInclusive(low, high, lastLow, lastHigh) {
 		return true
@@ -70,12 +78,4 @@ func areSegmentsOverlapped(low, high, lastLow, lastHigh int) bool {
 		return true
 	}
 	return false
-}
-
-func areSegmentsConsecutives(low, high, lastLow, lastHigh int) bool {
-	return ((lastHigh + 1) == low) || ((high + 1) == lastLow)
-}
-
-func areSegmentsConsecutivesOrOverlapped(low, high, lastLow, lastHigh int) bool {
-	return areSegmentsOverlapped(low, high, lastLow, lastHigh) || areSegmentsConsecutives(low, high, lastLow, lastHigh)
 }

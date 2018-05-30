@@ -21,25 +21,25 @@ type Intervals interface {
 	// HasGaps returns true if exists gaps for the introduced intervals between MinLow and MaxHigh
 	HasGaps() bool
 
-	// Get first sorts (if necessary) and then returns the interval list
+	// Get returns the interval list
 	Get() []*Interval
 
-	// Gaps first sorts (if necessary) and then returns the interval gaps
+	// Gaps returns the interval gaps
 	Gaps() []*Interval
 
-	// Merge first sorts (if necessary) and then fussion together overlapped intervals
+	// Merge fussion together overlapped intervals
 	Merge() []*Interval
 
 	// HasOverlapped returns true if exists overlapping for the introduced intervals
 	HasOverlapped() bool
 
-	// Overlapped first sorts (if necessary) and then returns the overlapped intervals
+	// Overlapped returns the overlapped intervals
 	Overlapped() []*Interval
 
 	// FindIntervalsForValue returns all the intervals which contains the passed value
 	FindIntervalsForValue(value int) []*Interval
 
-	// Report first sorts (if necessary) and then creates a report of the interval sequence
+	// Report creates a report of the interval sequence
 	Report() string
 
 	// IsLowInclusive indicates if the Low part of the interval is included, e. g. (3,5) --> the 3 is included as part of the interval
