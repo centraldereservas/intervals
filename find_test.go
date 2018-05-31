@@ -16,25 +16,25 @@ func initIntervalsForDemo001() interval.Intervals {
 	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive)
 
 	// add new intervals
-	if err := itvls.Add(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.Add(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.Add(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.Add(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.Add(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.Add(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.Add(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 	return itvls
