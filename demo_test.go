@@ -7,9 +7,12 @@ import (
 )
 
 type demo struct {
-	Intervals        interval.Intervals
-	ExpectedGaps     []interval.Interval
-	ExpectedOverlaps []interval.Interval
+	Intervals           interval.Intervals
+	ExpectedGaps        []interval.Interval
+	ExpectedOverlaps    []interval.Interval
+	ExpectedMerges      []interval.Interval
+	ExpectedFindMatches []interval.Interval
+	ValueToFind         int
 }
 
 ///////////////////////////////////////////////////////////
@@ -31,7 +34,11 @@ func buildIntervalsDemo001() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // one interval at the beginning (low/high inclusive)
@@ -54,7 +61,12 @@ func buildIntervalsDemo002() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: minLow, High: 4})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval at the end (low/high inclusive)
@@ -77,7 +89,12 @@ func buildIntervalsDemo003() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 8, High: maxHigh})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval in the middle (low/high inclusive)
@@ -101,7 +118,12 @@ func buildIntervalsDemo004() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 5, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, one inside the other (low/high inclusive)
@@ -129,7 +151,12 @@ func buildIntervalsDemo005() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 4, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle, not overlapping (low/high inclusive)
@@ -157,7 +184,13 @@ func buildIntervalsDemo006() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 4})
+	merges = append(merges, interval.Interval{Low: 6, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, consecutives (not overlapping) (low/high inclusive)
@@ -184,7 +217,12 @@ func buildIntervalsDemo007() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 6})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle, overlapping by 1 position (low/high inclusive)
@@ -212,7 +250,12 @@ func buildIntervalsDemo008() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 6, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, overlapping by 3 positions (low/high inclusive)
@@ -240,7 +283,12 @@ func buildIntervalsDemo009() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 4, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // three intervals (leading, middle and trailing), not overlapping (low/high inclusive)
@@ -270,7 +318,14 @@ func buildIntervalsDemo010() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: minLow, High: 2})
+	merges = append(merges, interval.Interval{Low: 4, High: 4})
+	merges = append(merges, interval.Interval{Low: 8, High: maxHigh})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  three intervals (in the middle), overlapping (low/high inclusive)
@@ -302,7 +357,12 @@ func buildIntervalsDemo011() demo {
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 3, High: 4})
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // complex case with a lot of intervals and overlapping (low/high inclusive)
@@ -360,7 +420,15 @@ func buildIntervalsDemo012() demo {
 	overlaps = append(overlaps, interval.Interval{Low: 20, High: 20})
 	overlaps = append(overlaps, interval.Interval{Low: 25, High: 28})
 	overlaps = append(overlaps, interval.Interval{Low: 30, High: 30})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: minLow, High: 7})
+	merges = append(merges, interval.Interval{Low: 10, High: 12})
+	merges = append(merges, interval.Interval{Low: 18, High: 32})
+	merges = append(merges, interval.Interval{Low: 35, High: 35})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 ///////////////////////////////////////////////////////////
@@ -382,7 +450,11 @@ func buildIntervalsDemo101() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // one interval at the beginning (low/high exclusive)
@@ -406,7 +478,12 @@ func buildIntervalsDemo102() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 1, High: 3})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval at the end (low/high exclusive)
@@ -430,7 +507,12 @@ func buildIntervalsDemo103() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 9, High: 9})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval in the middle (low/high exclusive)
@@ -454,7 +536,12 @@ func buildIntervalsDemo104() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 6, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, one inside the other (low/high exclusive)
@@ -482,7 +569,12 @@ func buildIntervalsDemo105() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle (low/high exclusive)
@@ -510,7 +602,13 @@ func buildIntervalsDemo106() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 3})
+	merges = append(merges, interval.Interval{Low: 7, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, consecutives  (low/high exclusive)
@@ -538,7 +636,13 @@ func buildIntervalsDemo107() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 3})
+	merges = append(merges, interval.Interval{Low: 5, High: 5})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle (low/high exclusive)
@@ -565,7 +669,12 @@ func buildIntervalsDemo108() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 5})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle (low/high exclusive)
@@ -593,7 +702,12 @@ func buildIntervalsDemo109() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // three intervals (leading, middle and trailing) (low/high exclusive)
@@ -624,7 +738,13 @@ func buildIntervalsDemo110() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 1, High: 1})
+	merges = append(merges, interval.Interval{Low: 9, High: 9})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  three intervals (in the middle) (low/high exclusive)
@@ -654,7 +774,12 @@ func buildIntervalsDemo111() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 6})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // complex case with a lot of intervals (low/high exclusive)
@@ -710,7 +835,16 @@ func buildIntervalsDemo112() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 26, High: 27})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 6})
+	merges = append(merges, interval.Interval{Low: 11, High: 11})
+	merges = append(merges, interval.Interval{Low: 19, High: 19})
+	merges = append(merges, interval.Interval{Low: 21, High: 29})
+	merges = append(merges, interval.Interval{Low: 31, High: 31})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 /////////////////////////////////////////////////////////////////
@@ -732,7 +866,11 @@ func buildIntervalsDemo201() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // one interval at the beginning (low inclusive and high exclusive)
@@ -755,7 +893,12 @@ func buildIntervalsDemo202() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: minLow, High: 3})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval at the end (low inclusive and high exclusive)
@@ -779,7 +922,12 @@ func buildIntervalsDemo203() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 8, High: maxHigh - 1})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval in the middle (low inclusive and high exclusive)
@@ -803,7 +951,12 @@ func buildIntervalsDemo204() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 5, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, one inside the other (low inclusive and high exclusive)
@@ -831,7 +984,12 @@ func buildIntervalsDemo205() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 4, High: 5})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle (low inclusive and high exclusive)
@@ -859,7 +1017,13 @@ func buildIntervalsDemo206() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 3})
+	merges = append(merges, interval.Interval{Low: 6, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, consecutives (low inclusive and high exclusive)
@@ -886,7 +1050,12 @@ func buildIntervalsDemo207() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 5})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle (low inclusive and high exclusive)
@@ -913,7 +1082,12 @@ func buildIntervalsDemo208() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 6})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle (low inclusive and high exclusive)
@@ -941,7 +1115,12 @@ func buildIntervalsDemo209() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 4, High: 5})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // three intervals (leading, middle and trailing) (low inclusive and high exclusive)
@@ -971,7 +1150,13 @@ func buildIntervalsDemo210() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: minLow, High: 1})
+	merges = append(merges, interval.Interval{Low: 8, High: 9})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  three intervals (in the middle) (low inclusive and high exclusive)
@@ -1003,7 +1188,12 @@ func buildIntervalsDemo211() demo {
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 3, High: 3})
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 2, High: 6})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // complex case with a lot of intervals (low inclusive and high exclusive)
@@ -1059,7 +1249,15 @@ func buildIntervalsDemo212() demo {
 	overlaps = append(overlaps, interval.Interval{Low: 3, High: 3})
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
 	overlaps = append(overlaps, interval.Interval{Low: 25, High: 27})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: minLow, High: minLow})
+	merges = append(merges, interval.Interval{Low: 2, High: 6})
+	merges = append(merges, interval.Interval{Low: 10, High: 11})
+	merges = append(merges, interval.Interval{Low: 18, High: 31})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 /////////////////////////////////////////////////////////////////
@@ -1081,7 +1279,11 @@ func buildIntervalsDemo301() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // one interval at the beginning (low exclusive and high inclusive)
@@ -1105,7 +1307,12 @@ func buildIntervalsDemo302() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 1, High: 4})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval at the end (low exclusive and high inclusive)
@@ -1128,7 +1335,12 @@ func buildIntervalsDemo303() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 9, High: maxHigh})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  one interval in the middle (low exclusive and high inclusive)
@@ -1152,7 +1364,12 @@ func buildIntervalsDemo304() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 6, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, one inside the other (low exclusive and high inclusive)
@@ -1180,7 +1397,12 @@ func buildIntervalsDemo305() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle (low exclusive and high inclusive)
@@ -1208,7 +1430,13 @@ func buildIntervalsDemo306() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 4})
+	merges = append(merges, interval.Interval{Low: 7, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle, consecutives (low exclusive and high inclusive)
@@ -1235,7 +1463,12 @@ func buildIntervalsDemo307() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 6})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // two intervals in the middle (low exclusive and high inclusive)
@@ -1262,7 +1495,12 @@ func buildIntervalsDemo308() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  two intervals in the middle (low exclusive and high inclusive)
@@ -1290,7 +1528,12 @@ func buildIntervalsDemo309() demo {
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 8})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // three intervals (leading, middle and trailing) (low exclusive and high inclusive)
@@ -1320,7 +1563,13 @@ func buildIntervalsDemo310() demo {
 
 	// calculate expected overlaps
 	overlaps := []interval.Interval{}
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 1, High: 2})
+	merges = append(merges, interval.Interval{Low: 9, High: maxHigh})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 //  three intervals (in the middle) (low exclusive and high inclusive)
@@ -1352,7 +1601,12 @@ func buildIntervalsDemo311() demo {
 	overlaps := []interval.Interval{}
 	overlaps = append(overlaps, interval.Interval{Low: 4, High: 4})
 	overlaps = append(overlaps, interval.Interval{Low: 6, High: 6})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 3, High: 7})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
 
 // complex case with a lot of intervals (low exclusive and high inclusive)
@@ -1409,5 +1663,13 @@ func buildIntervalsDemo312() demo {
 	overlaps = append(overlaps, interval.Interval{Low: 4, High: 4})
 	overlaps = append(overlaps, interval.Interval{Low: 6, High: 6})
 	overlaps = append(overlaps, interval.Interval{Low: 26, High: 28})
-	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps}
+
+	// calculate expected merges
+	merges := []interval.Interval{}
+	merges = append(merges, interval.Interval{Low: 1, High: 1})
+	merges = append(merges, interval.Interval{Low: 3, High: 7})
+	merges = append(merges, interval.Interval{Low: 11, High: 12})
+	merges = append(merges, interval.Interval{Low: 19, High: 32})
+
+	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
