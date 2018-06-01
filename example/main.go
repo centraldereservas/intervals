@@ -207,7 +207,7 @@ func plotData(path string, intervals interval.Intervals) error {
 	plots := []*Superplot{}
 
 	// create Intervals plot
-	xysIntervals := convertToPlotterXYs(intervals.Get())
+	xysIntervals := convertToPlotterXYs(intervals.GetIntervals())
 	p1, err := createPlot("Intervals", xysIntervals, PlotTypeIntervals)
 	if err != nil {
 		return fmt.Errorf("could not create plot: %v", err)
