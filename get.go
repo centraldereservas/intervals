@@ -1,6 +1,6 @@
 package interval
 
-func (intvls *intervals) Get() []*Interval {
+func (intvls *intervals) GetIntervals() []*Interval {
 	// sort intervals (if necessary)
 	intvls.Sort()
 

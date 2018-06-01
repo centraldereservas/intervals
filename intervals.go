@@ -5,10 +5,12 @@ import (
 )
 
 const (
-	defaultMinLow        = 0
-	defaultMaxHigh       = math.MaxInt64
-	defaultLowInclusive  = true
-	defaultHighInclusive = true
+	defaultMinLow            = 0
+	defaultMaxHigh           = math.MaxInt64
+	defaultLowInclusive      = true
+	defaultHighInclusive     = true
+	defaultSelfAdjustMinLow  = false
+	defaultSelfAdjustMaxHigh = true
 )
 
 // Intervals is an interface to handle Interval structures discovering the existence of gaps or overlays
@@ -26,7 +28,7 @@ type Intervals interface {
 	HasGaps() bool
 
 	// Get returns the interval list
-	Get() []*Interval
+	GetIntervals() []*Interval
 
 	// Gaps returns the interval gaps
 	Gaps() []*Interval
@@ -43,43 +45,55 @@ type Intervals interface {
 	// FindIntervalsForValue returns all the intervals which contains the passed value
 	FindIntervalsForValue(value int) []*Interval
 
-	// Report creates a report of the interval sequence
-	Report() string
-
 	// IsLowInclusive indicates if the Low part of the interval is included, e. g. (3,5) --> the 3 is included as part of the interval
 	IsLowInclusive() bool
 
 	// IsHighInclusive indicates if the High part of the interval is included, e. g. (3,5) --> the 5 is included as part of the interval
 	IsHighInclusive() bool
+
+	// GetMinLow returns the minimal Low, either the one configured in the constructor, or the self-adjusted calculated if SelfAdjustMinLow=true
+	GetMinLow() int
+
+	// GetMaxHigh returns the maximal High, either the one configured in the constructor, or the self-adjusted calculated if SelfAdjustMaxHigh=true
+	GetMaxHigh() int
 }
 
 // intervals implements Intervals interface
 type intervals struct {
-	Intervals      []*Interval
-	GapsList       []*Interval
-	OverlappedList []*Interval
-	MergeList      []*Interval
-	MinLow         int
-	MaxHigh        int
-	Sorted         bool
-	LowInclusive   bool
-	HighInclusive  bool
+	Intervals         []*Interval
+	GapsList          []*Interval
+	OverlappedList    []*Interval
+	MergeList         []*Interval
+	MinLow            int
+	MaxHigh           int
+	Sorted            bool
+	LowInclusive      bool
+	HighInclusive     bool
+	SelfAdjustMinLow  bool // set the minLow to the minimal Low value passed in Add or AddInterval methods
+	SelfAdjustMaxHigh bool // set the maxHigh to the maximal High value passed in Add or AddInterval methods
+}
+
+// String implements Stringer.Interface Interval
+func (itvls *intervals) String() string {
+	return itvls.report()
 }
 
 // NewIntervalsDefault is a constructor that returns an instance of the Intervals interface with default values
 func NewIntervalsDefault() Intervals {
-	return NewIntervals(defaultMinLow, defaultMaxHigh, defaultLowInclusive, defaultHighInclusive)
+	return NewIntervals(defaultMinLow, defaultMaxHigh, defaultLowInclusive, defaultHighInclusive, defaultSelfAdjustMinLow, defaultSelfAdjustMaxHigh)
 }
 
 // NewIntervals is a constructor that returns an instance of the Intervals interface
-func NewIntervals(minLow int, maxHigh int, lowInclusive bool, highInclusive bool) Intervals {
+func NewIntervals(minLow, maxHigh int, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh bool) Intervals {
 	return &intervals{
-		MinLow:        minLow,
-		MaxHigh:       maxHigh,
-		Intervals:     []*Interval{},
-		Sorted:        false,
-		LowInclusive:  lowInclusive,
-		HighInclusive: highInclusive,
+		MinLow:            minLow,
+		MaxHigh:           maxHigh,
+		Intervals:         []*Interval{},
+		Sorted:            false,
+		LowInclusive:      lowInclusive,
+		HighInclusive:     highInclusive,
+		SelfAdjustMinLow:  selfAdjustMinLow,
+		SelfAdjustMaxHigh: selfAdjustMaxHigh,
 	}
 }
 
@@ -89,4 +103,12 @@ func (intvls *intervals) IsLowInclusive() bool {
 
 func (intvls *intervals) IsHighInclusive() bool {
 	return intvls.HighInclusive
+}
+
+func (intvls *intervals) GetMinLow() int {
+	return intvls.MinLow
+}
+
+func (intvls *intervals) GetMaxHigh() int {
+	return intvls.MaxHigh
 }

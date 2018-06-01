@@ -13,7 +13,9 @@ func initIntervalsForDemo001() interval.Intervals {
 	maxHigh := 100
 	lowInclusive := true
 	highInclusive := true
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive)
+	selfAdjustMinLow := false
+	selfAdjustMaxHigh := true
+	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add new intervals
 	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {

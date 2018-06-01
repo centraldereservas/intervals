@@ -8,7 +8,13 @@ import (
 )
 
 func TestReport(t *testing.T) {
-	itvls := interval.NewIntervals(0, 100, true, true)
+	minLow := 0
+	maxHigh := 100
+	lowInclusive := true
+	highInclusive := true
+	selfAdjustMinLow := false
+	selfAdjustMaxHigh := true
+	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	var err error
 	err = itvls.AddInterval(&interval.Interval{Low: 5, High: 7})
@@ -49,7 +55,8 @@ func TestReport(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			t.Log(tc.itvls.Report())
+			// this will call report() which implements Springer interface
+			t.Log(tc.itvls)
 		})
 	}
 }

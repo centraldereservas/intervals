@@ -20,6 +20,9 @@ func TestOverlapped(t *testing.T) {
 	demo010 := buildIntervalsDemo010()
 	demo011 := buildIntervalsDemo011()
 	demo012 := buildIntervalsDemo012()
+	demo013 := buildIntervalsDemo013()
+	demo014 := buildIntervalsDemo014()
+	demo015 := buildIntervalsDemo015()
 
 	// tests for low/high exclusive
 	demo101 := buildIntervalsDemo101()
@@ -79,6 +82,9 @@ func TestOverlapped(t *testing.T) {
 		{name: "demo010", intvls: demo010.Intervals, expectedOverlaps: demo010.ExpectedOverlaps},
 		{name: "demo011", intvls: demo011.Intervals, expectedOverlaps: demo011.ExpectedOverlaps},
 		{name: "demo012", intvls: demo012.Intervals, expectedOverlaps: demo012.ExpectedOverlaps},
+		{name: "demo013", intvls: demo013.Intervals, expectedOverlaps: demo013.ExpectedOverlaps},
+		{name: "demo014", intvls: demo014.Intervals, expectedOverlaps: demo014.ExpectedOverlaps},
+		{name: "demo015", intvls: demo015.Intervals, expectedOverlaps: demo015.ExpectedOverlaps},
 
 		{name: "demo101", intvls: demo101.Intervals, expectedOverlaps: demo101.ExpectedOverlaps},
 		{name: "demo102", intvls: demo102.Intervals, expectedOverlaps: demo102.ExpectedOverlaps},

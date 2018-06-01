@@ -91,7 +91,14 @@ func readData(path string) ([]xy, error) {
 }
 
 func initIntervals(xys []xy) interval.Intervals {
-	intervals := interval.NewIntervals(MinX, MaxX, true, true)
+	// initialize Intervals
+	minLow := MinX
+	maxHigh := MaxX
+	lowInclusive = true
+	highInclusive = true
+	selfAdjustMinLow := false
+	selfAdjustMaxHigh := true
+	intervals := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	if intervals.IsLowInclusive() {
 		intervalOpening = "["
@@ -110,7 +117,7 @@ func initIntervals(xys []xy) interval.Intervals {
 	}
 
 	for _, xy := range xys {
-		err := intervals.Add(&interval.Interval{Low: xy.x, High: xy.y})
+		err := intervals.AddInterval(&interval.Interval{Low: xy.x, High: xy.y})
 		if err != nil {
 			fmt.Printf("invalid interval discarded: %v\n", err)
 		}
@@ -127,7 +134,7 @@ func convertToPlotterXYs(intervals []*interval.Interval) plotter.XYs {
 	return pxys
 }
 
-func alignPlots(plotItems []*Superplot) *vgimg.Canvas {
+func alignPlots(plotItems []*Superplot, minLow, maxHigh int) *vgimg.Canvas {
 	rows, cols := len(plotItems), 1
 	plots := make([][]*plot.Plot, rows)
 	for j := 0; j < rows; j++ {
@@ -136,8 +143,8 @@ func alignPlots(plotItems []*Superplot) *vgimg.Canvas {
 			p := plotItems[j]
 
 			// make sure the horizontal scales match
-			p.Plot.X.Min = MinX
-			p.Plot.X.Max = MaxX
+			p.Plot.X.Min = float64(minLow)  // MinX
+			p.Plot.X.Max = float64(maxHigh) //MaxX
 
 			plots[j][i] = p.Plot
 		}
@@ -232,7 +239,7 @@ func plotData(path string, intervals interval.Intervals) error {
 	plots = append(plots, p4)
 
 	// join all plots, align them
-	canvas := alignPlots(plots)
+	canvas := alignPlots(plots, intervals.GetMinLow(), intervals.GetMaxHigh())
 	err = createFileFromCanvas("out.png", canvas)
 	if err != nil {
 		return err

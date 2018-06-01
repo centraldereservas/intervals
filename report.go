@@ -25,7 +25,7 @@ func newSymbols() symbols {
 	}
 }
 
-func (intvls *intervals) Report() string {
+func (intvls *intervals) report() string {
 	intvls.Sort()
 	symbols := newSymbols()
 	intro := intvls.buildHeading()

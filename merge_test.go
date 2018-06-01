@@ -20,6 +20,9 @@ func TestMerge(t *testing.T) {
 	demo010 := buildIntervalsDemo010()
 	demo011 := buildIntervalsDemo011()
 	demo012 := buildIntervalsDemo012()
+	demo013 := buildIntervalsDemo013()
+	demo014 := buildIntervalsDemo014()
+	demo015 := buildIntervalsDemo015()
 
 	// tests for low/high exclusive
 	demo101 := buildIntervalsDemo101()
@@ -79,6 +82,9 @@ func TestMerge(t *testing.T) {
 		{name: "demo010", intvls: demo010.Intervals, expectedMerges: demo010.ExpectedMerges},
 		{name: "demo011", intvls: demo011.Intervals, expectedMerges: demo011.ExpectedMerges},
 		{name: "demo012", intvls: demo012.Intervals, expectedMerges: demo012.ExpectedMerges},
+		{name: "demo013", intvls: demo013.Intervals, expectedMerges: demo013.ExpectedMerges},
+		{name: "demo014", intvls: demo014.Intervals, expectedMerges: demo014.ExpectedMerges},
+		{name: "demo015", intvls: demo015.Intervals, expectedMerges: demo015.ExpectedMerges},
 
 		{name: "demo101", intvls: demo101.Intervals, expectedMerges: demo101.ExpectedMerges},
 		{name: "demo102", intvls: demo102.Intervals, expectedMerges: demo102.ExpectedMerges},

@@ -20,6 +20,9 @@ func TestGaps(t *testing.T) {
 	demo010 := buildIntervalsDemo010()
 	demo011 := buildIntervalsDemo011()
 	demo012 := buildIntervalsDemo012()
+	demo013 := buildIntervalsDemo013()
+	demo014 := buildIntervalsDemo014()
+	demo015 := buildIntervalsDemo015()
 
 	// tests for low/high exclusive
 	demo101 := buildIntervalsDemo101()
@@ -79,6 +82,9 @@ func TestGaps(t *testing.T) {
 		{name: "demo010", intvls: demo010.Intervals, expectedGaps: demo010.ExpectedGaps},
 		{name: "demo011", intvls: demo011.Intervals, expectedGaps: demo011.ExpectedGaps},
 		{name: "demo012", intvls: demo012.Intervals, expectedGaps: demo012.ExpectedGaps},
+		{name: "demo013", intvls: demo013.Intervals, expectedGaps: demo013.ExpectedGaps},
+		{name: "demo014", intvls: demo014.Intervals, expectedGaps: demo014.ExpectedGaps},
+		{name: "demo015", intvls: demo015.Intervals, expectedGaps: demo015.ExpectedGaps},
 
 		{name: "demo101", intvls: demo101.Intervals, expectedGaps: demo101.ExpectedGaps},
 		{name: "demo102", intvls: demo102.Intervals, expectedGaps: demo102.ExpectedGaps},
@@ -122,6 +128,9 @@ func TestGaps(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
+			// if tc.name == "demo014" {
+			// 	fmt.Printf("stop point")
+			// }
 			gaps := tc.intvls.Gaps()
 			unexpectedLength := false
 			if len(gaps) != len(tc.expectedGaps) {
