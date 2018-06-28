@@ -21,9 +21,6 @@ type Intervals interface {
 	// AddInterval appends a new interval to the list. If the interval range (low, high) is invalid, it returns an error
 	AddInterval(itvl *Interval) error
 
-	// Sort sorts the intervals list by the Low property (ascending)
-	Sort()
-
 	// HasGaps returns true if exists gaps for the introduced intervals between MinLow and MaxHigh
 	HasGaps() bool
 
