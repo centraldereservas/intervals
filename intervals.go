@@ -94,18 +94,18 @@ func NewIntervals(minLow, maxHigh int, lowInclusive, highInclusive, selfAdjustMi
 	}
 }
 
-func (intvls *intervals) IsLowInclusive() bool {
-	return intvls.LowInclusive
+func (itvls *intervals) IsLowInclusive() bool {
+	return itvls.LowInclusive
 }
 
-func (intvls *intervals) IsHighInclusive() bool {
-	return intvls.HighInclusive
+func (itvls *intervals) IsHighInclusive() bool {
+	return itvls.HighInclusive
 }
 
-func (intvls *intervals) GetMinLow() int {
-	return intvls.MinLow
+func (itvls *intervals) GetMinLow() int {
+	return itvls.MinLow
 }
 
-func (intvls *intervals) GetMaxHigh() int {
-	return intvls.MaxHigh
+func (itvls *intervals) GetMaxHigh() int {
+	return itvls.MaxHigh
 }
