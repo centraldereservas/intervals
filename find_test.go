@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"bitbucket.org/differenttravel/interval"
+	"github.com/centraldereservas/intervals"
 )
 
 func initIntervalsForDemo001() interval.Intervals {

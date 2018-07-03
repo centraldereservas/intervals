@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"bitbucket.org/differenttravel/interval"
+	"github.com/centraldereservas/intervals"
 )
 
 type demo struct {

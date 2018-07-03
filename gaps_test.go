@@ -3,7 +3,7 @@ package interval_test
 import (
 	"testing"
 
-	"bitbucket.org/differenttravel/interval"
+	"github.com/centraldereservas/intervals"
 )
 
 func TestGaps(t *testing.T) {
