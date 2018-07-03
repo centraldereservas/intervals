@@ -1,4 +1,4 @@
-# intervals [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![GoDoc](https://godoc.org/github.com/centraldereservas/intervals?status.svg)](https://godoc.org/github.com/centraldereservas/intervals)
+# intervals [![Build Status](https://travis-ci.org/centraldereservas/intervals.svg?branch=master)](https://travis-ci.org/centraldereservas/intervals) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![GoDoc](https://godoc.org/github.com/centraldereservas/intervals?status.svg)](https://godoc.org/github.com/centraldereservas/intervals)
 
 Provides a helper to work with integer intervals detecting gaps, merged and overlapped sections.
 
@@ -12,7 +12,7 @@ go get github.com/centraldereservas/intervals
 
 Why we need to have control over a list of intervals?
 
-Because provider API's have product prices depending on the age, so they assign a price amount to different age bands.
+Because the API providers have their product prices depending on the age, so they assign a price amount to different age bands.
 
 As a result we have a bunch of age bands (with its corresponding price) which can have:
 
