@@ -75,6 +75,5 @@ func initIntervals(xys []xy) interval.Intervals {
 			fmt.Printf("invalid interval discarded: %v\n", err)
 		}
 	}
-	intervals.Sort()
 	return intervals
 }
