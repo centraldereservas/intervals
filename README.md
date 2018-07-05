@@ -144,10 +144,13 @@ Output:
 go run ./example/main.go
 ```
 
-This example generates an output image file exposing the data analyzed:
+The following image is an example where  `lowInclusive` and `highInclusive` are both `true`:
 
 ![alt text](./example/out.png)
 
+The next image is another example where `lowInclusive` is `true` but `highInclusive` is `false`:
+
+![alt text](./example/out2.png)
 
 ## References
 
