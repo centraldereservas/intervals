@@ -1,4 +1,4 @@
-package interval_test
+package intervals_test
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/centraldereservas/intervals"
 )
 
-func initIntervalsForDemo001() interval.Intervals {
+func initIntervalsForDemo001() intervals.Intervals {
 	// initialize Intervals
 	minLow := 0
 	maxHigh := 100
@@ -15,28 +15,28 @@ func initIntervalsForDemo001() interval.Intervals {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := true
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add new intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 	return itvls
@@ -45,17 +45,17 @@ func initIntervalsForDemo001() interval.Intervals {
 //  matches for value=2
 func buildFindDemo001() demo {
 	itvls := initIntervalsForDemo001()
-	matches := []interval.Interval{}
-	matches = append(matches, interval.Interval{Low: 2, High: 4})
+	matches := []intervals.Interval{}
+	matches = append(matches, intervals.Interval{Low: 2, High: 4})
 	return demo{Intervals: itvls, ExpectedFindMatches: matches, ValueToFind: 2}
 }
 
 //  matches for value=4
 func buildFindDemo002() demo {
 	itvls := initIntervalsForDemo001()
-	matches := []interval.Interval{}
-	matches = append(matches, interval.Interval{Low: 2, High: 4})
-	matches = append(matches, interval.Interval{Low: 3, High: 6})
+	matches := []intervals.Interval{}
+	matches = append(matches, intervals.Interval{Low: 2, High: 4})
+	matches = append(matches, intervals.Interval{Low: 3, High: 6})
 	return demo{Intervals: itvls, ExpectedFindMatches: matches, ValueToFind: 4}
 }
 
@@ -66,8 +66,8 @@ func TestFindIntervalsForValue(t *testing.T) {
 	tt := []struct {
 		name            string
 		valueToFind     int
-		intvls          interval.Intervals
-		expectedMatches []interval.Interval
+		intvls          intervals.Intervals
+		expectedMatches []intervals.Interval
 	}{
 		{name: "demo001", valueToFind: demo001.ValueToFind, intvls: demo001.Intervals, expectedMatches: demo001.ExpectedFindMatches},
 		{name: "demo002", valueToFind: demo002.ValueToFind, intvls: demo002.Intervals, expectedMatches: demo002.ExpectedFindMatches},

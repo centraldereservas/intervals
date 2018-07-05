@@ -1,4 +1,4 @@
-package interval
+package intervals
 
 import (
 	"math"
@@ -77,11 +77,11 @@ func (itvls *intervals) String() string {
 
 // NewIntervalsDefault is a constructor that returns an instance of the Intervals interface with default values
 func NewIntervalsDefault() Intervals {
-	return NewIntervals(defaultMinLow, defaultMaxHigh, defaultLowInclusive, defaultHighInclusive, defaultSelfAdjustMinLow, defaultSelfAdjustMaxHigh)
+	return New(defaultMinLow, defaultMaxHigh, defaultLowInclusive, defaultHighInclusive, defaultSelfAdjustMinLow, defaultSelfAdjustMaxHigh)
 }
 
-// NewIntervals is a constructor that returns an instance of the Intervals interface
-func NewIntervals(minLow, maxHigh int, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh bool) Intervals {
+// New is a constructor that returns an instance of the Intervals interface
+func New(minLow, maxHigh int, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh bool) Intervals {
 	return &intervals{
 		MinLow:            minLow,
 		MaxHigh:           maxHigh,

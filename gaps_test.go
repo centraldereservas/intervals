@@ -1,4 +1,4 @@
-package interval_test
+package intervals_test
 
 import (
 	"testing"
@@ -67,8 +67,8 @@ func TestGaps(t *testing.T) {
 	demo312 := buildIntervalsDemo312()
 	tt := []struct {
 		name         string
-		intvls       interval.Intervals
-		expectedGaps []interval.Interval
+		intvls       intervals.Intervals
+		expectedGaps []intervals.Interval
 	}{
 		{name: "demo001", intvls: demo001.Intervals, expectedGaps: demo001.ExpectedGaps},
 		{name: "demo002", intvls: demo002.Intervals, expectedGaps: demo002.ExpectedGaps},

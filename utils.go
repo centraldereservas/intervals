@@ -1,4 +1,4 @@
-package interval
+package intervals
 
 func min(a, b int) int {
 	if a < b {

@@ -1,4 +1,4 @@
-package interval_test
+package intervals_test
 
 import (
 	"testing"
@@ -67,8 +67,8 @@ func TestMerge(t *testing.T) {
 	demo312 := buildIntervalsDemo312()
 	tt := []struct {
 		name           string
-		intvls         interval.Intervals
-		expectedMerges []interval.Interval
+		intvls         intervals.Intervals
+		expectedMerges []intervals.Interval
 	}{
 		{name: "demo001", intvls: demo001.Intervals, expectedMerges: demo001.ExpectedMerges},
 		{name: "demo002", intvls: demo002.Intervals, expectedMerges: demo002.ExpectedMerges},

@@ -1,4 +1,4 @@
-package interval_test
+package intervals_test
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 )
 
 type demo struct {
-	Intervals           interval.Intervals
-	ExpectedGaps        []interval.Interval
-	ExpectedOverlaps    []interval.Interval
-	ExpectedMerges      []interval.Interval
-	ExpectedFindMatches []interval.Interval
+	Intervals           intervals.Intervals
+	ExpectedGaps        []intervals.Interval
+	ExpectedOverlaps    []intervals.Interval
+	ExpectedMerges      []intervals.Interval
+	ExpectedFindMatches []intervals.Interval
 	ValueToFind         int
 }
 
@@ -29,17 +29,17 @@ func buildIntervalsDemo001() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
+	merges := []intervals.Interval{}
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -53,23 +53,23 @@ func buildIntervalsDemo002() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 5, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 5, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: 4})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: 4})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -83,23 +83,23 @@ func buildIntervalsDemo003() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 7})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 7})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 8, High: maxHigh})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 8, High: maxHigh})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -113,24 +113,24 @@ func buildIntervalsDemo004() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 4})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 4})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 5, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 5, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -144,28 +144,28 @@ func buildIntervalsDemo005() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 4, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 4, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -179,29 +179,29 @@ func buildIntervalsDemo006() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 5, High: 5})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 5, High: 5})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 4})
-	merges = append(merges, interval.Interval{Low: 6, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 4})
+	merges = append(merges, intervals.Interval{Low: 6, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -215,27 +215,27 @@ func buildIntervalsDemo007() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 3}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 3}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 7, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 6})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 6})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -249,28 +249,28 @@ func buildIntervalsDemo008() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 6, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 6, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -284,28 +284,28 @@ func buildIntervalsDemo009() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 4, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 4, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -319,32 +319,32 @@ func buildIntervalsDemo010() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 2}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 2}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 3, High: 3})
-	gaps = append(gaps, interval.Interval{Low: 5, High: 7})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 3, High: 3})
+	gaps = append(gaps, intervals.Interval{Low: 5, High: 7})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: 2})
-	merges = append(merges, interval.Interval{Low: 4, High: 4})
-	merges = append(merges, interval.Interval{Low: 8, High: maxHigh})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: 2})
+	merges = append(merges, intervals.Interval{Low: 4, High: 4})
+	merges = append(merges, intervals.Interval{Low: 8, High: maxHigh})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -358,32 +358,32 @@ func buildIntervalsDemo011() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -397,61 +397,61 @@ func buildIntervalsDemo012() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 1}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 1}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 8, High: 9})
-	gaps = append(gaps, interval.Interval{Low: 13, High: 17})
-	gaps = append(gaps, interval.Interval{Low: 33, High: 34})
-	gaps = append(gaps, interval.Interval{Low: 36, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 8, High: 9})
+	gaps = append(gaps, intervals.Interval{Low: 13, High: 17})
+	gaps = append(gaps, intervals.Interval{Low: 33, High: 34})
+	gaps = append(gaps, intervals.Interval{Low: 36, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	overlaps = append(overlaps, interval.Interval{Low: 20, High: 20})
-	overlaps = append(overlaps, interval.Interval{Low: 25, High: 28})
-	overlaps = append(overlaps, interval.Interval{Low: 30, High: 30})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
+	overlaps = append(overlaps, intervals.Interval{Low: 20, High: 20})
+	overlaps = append(overlaps, intervals.Interval{Low: 25, High: 28})
+	overlaps = append(overlaps, intervals.Interval{Low: 30, High: 30})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: 7})
-	merges = append(merges, interval.Interval{Low: 10, High: 12})
-	merges = append(merges, interval.Interval{Low: 18, High: 32})
-	merges = append(merges, interval.Interval{Low: 35, High: 35})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: 7})
+	merges = append(merges, intervals.Interval{Low: 10, High: 12})
+	merges = append(merges, intervals.Interval{Low: 18, High: 32})
+	merges = append(merges, intervals.Interval{Low: 35, High: 35})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -465,60 +465,60 @@ func buildIntervalsDemo013() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := true
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 1}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 1}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 8, High: 9})
-	gaps = append(gaps, interval.Interval{Low: 13, High: 17})
-	gaps = append(gaps, interval.Interval{Low: 33, High: 34})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 8, High: 9})
+	gaps = append(gaps, intervals.Interval{Low: 13, High: 17})
+	gaps = append(gaps, intervals.Interval{Low: 33, High: 34})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	overlaps = append(overlaps, interval.Interval{Low: 20, High: 20})
-	overlaps = append(overlaps, interval.Interval{Low: 25, High: 28})
-	overlaps = append(overlaps, interval.Interval{Low: 30, High: 30})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
+	overlaps = append(overlaps, intervals.Interval{Low: 20, High: 20})
+	overlaps = append(overlaps, intervals.Interval{Low: 25, High: 28})
+	overlaps = append(overlaps, intervals.Interval{Low: 30, High: 30})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: 7})
-	merges = append(merges, interval.Interval{Low: 10, High: 12})
-	merges = append(merges, interval.Interval{Low: 18, High: 32})
-	merges = append(merges, interval.Interval{Low: 35, High: 35})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: 7})
+	merges = append(merges, intervals.Interval{Low: 10, High: 12})
+	merges = append(merges, intervals.Interval{Low: 18, High: 32})
+	merges = append(merges, intervals.Interval{Low: 35, High: 35})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -532,57 +532,57 @@ func buildIntervalsDemo014() demo {
 	highInclusive := true
 	selfAdjustMinLow := true
 	selfAdjustMaxHigh := true
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 8, High: 9})
-	gaps = append(gaps, interval.Interval{Low: 13, High: 17})
-	gaps = append(gaps, interval.Interval{Low: 33, High: 34})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 8, High: 9})
+	gaps = append(gaps, intervals.Interval{Low: 13, High: 17})
+	gaps = append(gaps, intervals.Interval{Low: 33, High: 34})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	overlaps = append(overlaps, interval.Interval{Low: 20, High: 20})
-	overlaps = append(overlaps, interval.Interval{Low: 25, High: 28})
-	overlaps = append(overlaps, interval.Interval{Low: 30, High: 30})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
+	overlaps = append(overlaps, intervals.Interval{Low: 20, High: 20})
+	overlaps = append(overlaps, intervals.Interval{Low: 25, High: 28})
+	overlaps = append(overlaps, intervals.Interval{Low: 30, High: 30})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 7})
-	merges = append(merges, interval.Interval{Low: 10, High: 12})
-	merges = append(merges, interval.Interval{Low: 18, High: 32})
-	merges = append(merges, interval.Interval{Low: 35, High: 35})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 7})
+	merges = append(merges, intervals.Interval{Low: 10, High: 12})
+	merges = append(merges, intervals.Interval{Low: 18, High: 32})
+	merges = append(merges, intervals.Interval{Low: 35, High: 35})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -596,58 +596,58 @@ func buildIntervalsDemo015() demo {
 	highInclusive := true
 	selfAdjustMinLow := true
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 8, High: 9})
-	gaps = append(gaps, interval.Interval{Low: 13, High: 17})
-	gaps = append(gaps, interval.Interval{Low: 33, High: 34})
-	gaps = append(gaps, interval.Interval{Low: 36, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 8, High: 9})
+	gaps = append(gaps, intervals.Interval{Low: 13, High: 17})
+	gaps = append(gaps, intervals.Interval{Low: 33, High: 34})
+	gaps = append(gaps, intervals.Interval{Low: 36, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
-	overlaps = append(overlaps, interval.Interval{Low: 20, High: 20})
-	overlaps = append(overlaps, interval.Interval{Low: 25, High: 28})
-	overlaps = append(overlaps, interval.Interval{Low: 30, High: 30})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
+	overlaps = append(overlaps, intervals.Interval{Low: 20, High: 20})
+	overlaps = append(overlaps, intervals.Interval{Low: 25, High: 28})
+	overlaps = append(overlaps, intervals.Interval{Low: 30, High: 30})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 7})
-	merges = append(merges, interval.Interval{Low: 10, High: 12})
-	merges = append(merges, interval.Interval{Low: 18, High: 32})
-	merges = append(merges, interval.Interval{Low: 35, High: 35})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 7})
+	merges = append(merges, intervals.Interval{Low: 10, High: 12})
+	merges = append(merges, intervals.Interval{Low: 18, High: 32})
+	merges = append(merges, intervals.Interval{Low: 35, High: 35})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -665,17 +665,17 @@ func buildIntervalsDemo101() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
+	merges := []intervals.Interval{}
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -689,24 +689,24 @@ func buildIntervalsDemo102() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: minLow})
-	gaps = append(gaps, interval.Interval{Low: 4, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: minLow})
+	gaps = append(gaps, intervals.Interval{Low: 4, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 1, High: 3})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 1, High: 3})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -720,24 +720,24 @@ func buildIntervalsDemo103() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 8})
-	gaps = append(gaps, interval.Interval{Low: maxHigh, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 8})
+	gaps = append(gaps, intervals.Interval{Low: maxHigh, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 9, High: 9})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 9, High: 9})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -751,24 +751,24 @@ func buildIntervalsDemo104() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 5})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 5})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 6, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 6, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -782,28 +782,28 @@ func buildIntervalsDemo105() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 5})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -817,29 +817,29 @@ func buildIntervalsDemo106() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 4, High: 6})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 4, High: 6})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 3})
-	merges = append(merges, interval.Interval{Low: 7, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 3})
+	merges = append(merges, intervals.Interval{Low: 7, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -853,29 +853,29 @@ func buildIntervalsDemo107() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 4, High: 4})
-	gaps = append(gaps, interval.Interval{Low: 6, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 4, High: 4})
+	gaps = append(gaps, intervals.Interval{Low: 6, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 3})
-	merges = append(merges, interval.Interval{Low: 5, High: 5})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 3})
+	merges = append(merges, intervals.Interval{Low: 5, High: 5})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -889,27 +889,27 @@ func buildIntervalsDemo108() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 6, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 6, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 5})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 5})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -923,28 +923,28 @@ func buildIntervalsDemo109() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 5})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -958,32 +958,32 @@ func buildIntervalsDemo110() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 2}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 2}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: minLow})
-	gaps = append(gaps, interval.Interval{Low: 2, High: 8})
-	gaps = append(gaps, interval.Interval{Low: maxHigh, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: minLow})
+	gaps = append(gaps, intervals.Interval{Low: 2, High: 8})
+	gaps = append(gaps, intervals.Interval{Low: maxHigh, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 1, High: 1})
-	merges = append(merges, interval.Interval{Low: 9, High: 9})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 1, High: 1})
+	merges = append(merges, intervals.Interval{Low: 9, High: 9})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -997,30 +997,30 @@ func buildIntervalsDemo111() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 7, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 6})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 6})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1034,60 +1034,60 @@ func buildIntervalsDemo112() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 1}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 1}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 7, High: 10})
-	gaps = append(gaps, interval.Interval{Low: 12, High: 18})
-	gaps = append(gaps, interval.Interval{Low: 20, High: 20})
-	gaps = append(gaps, interval.Interval{Low: 30, High: 30})
-	gaps = append(gaps, interval.Interval{Low: 32, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: 10})
+	gaps = append(gaps, intervals.Interval{Low: 12, High: 18})
+	gaps = append(gaps, intervals.Interval{Low: 20, High: 20})
+	gaps = append(gaps, intervals.Interval{Low: 30, High: 30})
+	gaps = append(gaps, intervals.Interval{Low: 32, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 26, High: 27})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 26, High: 27})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 6})
-	merges = append(merges, interval.Interval{Low: 11, High: 11})
-	merges = append(merges, interval.Interval{Low: 19, High: 19})
-	merges = append(merges, interval.Interval{Low: 21, High: 29})
-	merges = append(merges, interval.Interval{Low: 31, High: 31})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 6})
+	merges = append(merges, intervals.Interval{Low: 11, High: 11})
+	merges = append(merges, intervals.Interval{Low: 19, High: 19})
+	merges = append(merges, intervals.Interval{Low: 21, High: 29})
+	merges = append(merges, intervals.Interval{Low: 31, High: 31})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1105,17 +1105,17 @@ func buildIntervalsDemo201() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
+	merges := []intervals.Interval{}
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1129,23 +1129,23 @@ func buildIntervalsDemo202() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 4, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 4, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: 3})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: 3})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1159,24 +1159,24 @@ func buildIntervalsDemo203() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 7})
-	gaps = append(gaps, interval.Interval{Low: maxHigh, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 7})
+	gaps = append(gaps, intervals.Interval{Low: maxHigh, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 8, High: maxHigh - 1})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 8, High: maxHigh - 1})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1190,24 +1190,24 @@ func buildIntervalsDemo204() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 4})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 4})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 5, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 5, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1221,28 +1221,28 @@ func buildIntervalsDemo205() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 4, High: 5})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 4, High: 5})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1256,29 +1256,29 @@ func buildIntervalsDemo206() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 4, High: 5})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 4, High: 5})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 3})
-	merges = append(merges, interval.Interval{Low: 6, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 3})
+	merges = append(merges, intervals.Interval{Low: 6, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1292,27 +1292,27 @@ func buildIntervalsDemo207() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 6, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 6, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 5})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 5})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1326,27 +1326,27 @@ func buildIntervalsDemo208() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 7, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 6})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 6})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1360,28 +1360,28 @@ func buildIntervalsDemo209() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 4, High: 5})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 4, High: 5})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1395,31 +1395,31 @@ func buildIntervalsDemo210() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 2}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 2}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 2, High: 7})
-	gaps = append(gaps, interval.Interval{Low: maxHigh, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 2, High: 7})
+	gaps = append(gaps, intervals.Interval{Low: maxHigh, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: 1})
-	merges = append(merges, interval.Interval{Low: 8, High: 9})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: 1})
+	merges = append(merges, intervals.Interval{Low: 8, High: 9})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1433,32 +1433,32 @@ func buildIntervalsDemo211() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 7, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 3})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 3})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 5})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 2, High: 6})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 2, High: 6})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1472,59 +1472,59 @@ func buildIntervalsDemo212() demo {
 	highInclusive := false
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 1}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 1}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: 1, High: 1})
-	gaps = append(gaps, interval.Interval{Low: 7, High: 9})
-	gaps = append(gaps, interval.Interval{Low: 12, High: 17})
-	gaps = append(gaps, interval.Interval{Low: 32, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: 1, High: 1})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: 9})
+	gaps = append(gaps, intervals.Interval{Low: 12, High: 17})
+	gaps = append(gaps, intervals.Interval{Low: 32, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 3, High: 3})
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 5})
-	overlaps = append(overlaps, interval.Interval{Low: 25, High: 27})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 3, High: 3})
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 5})
+	overlaps = append(overlaps, intervals.Interval{Low: 25, High: 27})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: minLow, High: minLow})
-	merges = append(merges, interval.Interval{Low: 2, High: 6})
-	merges = append(merges, interval.Interval{Low: 10, High: 11})
-	merges = append(merges, interval.Interval{Low: 18, High: 31})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: minLow, High: minLow})
+	merges = append(merges, intervals.Interval{Low: 2, High: 6})
+	merges = append(merges, intervals.Interval{Low: 10, High: 11})
+	merges = append(merges, intervals.Interval{Low: 18, High: 31})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1542,17 +1542,17 @@ func buildIntervalsDemo301() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
+	merges := []intervals.Interval{}
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1566,24 +1566,24 @@ func buildIntervalsDemo302() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: minLow})
-	gaps = append(gaps, interval.Interval{Low: 5, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: minLow})
+	gaps = append(gaps, intervals.Interval{Low: 5, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 1, High: 4})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 1, High: 4})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1597,23 +1597,23 @@ func buildIntervalsDemo303() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 8})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 8})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 9, High: maxHigh})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 9, High: maxHigh})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1627,24 +1627,24 @@ func buildIntervalsDemo304() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 5})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 5})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 6, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 6, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1658,28 +1658,28 @@ func buildIntervalsDemo305() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1693,29 +1693,29 @@ func buildIntervalsDemo306() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 5, High: 6})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 5, High: 6})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 4})
-	merges = append(merges, interval.Interval{Low: 7, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 4})
+	merges = append(merges, intervals.Interval{Low: 7, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1729,27 +1729,27 @@ func buildIntervalsDemo307() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 7, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 7, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 6})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 6})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1763,27 +1763,27 @@ func buildIntervalsDemo308() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 6, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 6, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1797,28 +1797,28 @@ func buildIntervalsDemo309() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 8}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 8}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 9, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 9, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 5, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 5, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 8})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 8})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1832,31 +1832,31 @@ func buildIntervalsDemo310() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 2}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 2}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 4, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 4, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 8, High: maxHigh}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 8, High: maxHigh}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: minLow})
-	gaps = append(gaps, interval.Interval{Low: 3, High: 8})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: minLow})
+	gaps = append(gaps, intervals.Interval{Low: 3, High: 8})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
+	overlaps := []intervals.Interval{}
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 1, High: 2})
-	merges = append(merges, interval.Interval{Low: 9, High: maxHigh})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 1, High: 2})
+	merges = append(merges, intervals.Interval{Low: 9, High: maxHigh})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1870,32 +1870,32 @@ func buildIntervalsDemo311() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 8, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 4, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 6, High: 6})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 4, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 6, High: 6})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 3, High: 7})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 3, High: 7})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }
@@ -1909,60 +1909,60 @@ func buildIntervalsDemo312() demo {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := false
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	// add intervals
-	if err := itvls.AddInterval(&interval.Interval{Low: 5, High: 7}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 5, High: 7}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 2, High: 4}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 2, High: 4}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 35, High: 35}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 35, High: 35}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 3, High: 6}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 3, High: 6}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 18, High: 20}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 18, High: 20}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 20, High: 30}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 20, High: 30}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 25, High: 28}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 25, High: 28}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: minLow, High: 1}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: minLow, High: 1}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 30, High: 32}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 30, High: 32}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	if err := itvls.AddInterval(&interval.Interval{Low: 10, High: 12}); err != nil {
+	if err := itvls.AddInterval(&intervals.Interval{Low: 10, High: 12}); err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	// calculate expected gaps
-	gaps := []interval.Interval{}
-	gaps = append(gaps, interval.Interval{Low: minLow, High: minLow})
-	gaps = append(gaps, interval.Interval{Low: 2, High: 2})
-	gaps = append(gaps, interval.Interval{Low: 8, High: 10})
-	gaps = append(gaps, interval.Interval{Low: 13, High: 18})
-	gaps = append(gaps, interval.Interval{Low: 33, High: maxHigh})
+	gaps := []intervals.Interval{}
+	gaps = append(gaps, intervals.Interval{Low: minLow, High: minLow})
+	gaps = append(gaps, intervals.Interval{Low: 2, High: 2})
+	gaps = append(gaps, intervals.Interval{Low: 8, High: 10})
+	gaps = append(gaps, intervals.Interval{Low: 13, High: 18})
+	gaps = append(gaps, intervals.Interval{Low: 33, High: maxHigh})
 
 	// calculate expected overlaps
-	overlaps := []interval.Interval{}
-	overlaps = append(overlaps, interval.Interval{Low: 4, High: 4})
-	overlaps = append(overlaps, interval.Interval{Low: 6, High: 6})
-	overlaps = append(overlaps, interval.Interval{Low: 26, High: 28})
+	overlaps := []intervals.Interval{}
+	overlaps = append(overlaps, intervals.Interval{Low: 4, High: 4})
+	overlaps = append(overlaps, intervals.Interval{Low: 6, High: 6})
+	overlaps = append(overlaps, intervals.Interval{Low: 26, High: 28})
 
 	// calculate expected merges
-	merges := []interval.Interval{}
-	merges = append(merges, interval.Interval{Low: 1, High: 1})
-	merges = append(merges, interval.Interval{Low: 3, High: 7})
-	merges = append(merges, interval.Interval{Low: 11, High: 12})
-	merges = append(merges, interval.Interval{Low: 19, High: 32})
+	merges := []intervals.Interval{}
+	merges = append(merges, intervals.Interval{Low: 1, High: 1})
+	merges = append(merges, intervals.Interval{Low: 3, High: 7})
+	merges = append(merges, intervals.Interval{Low: 11, High: 12})
+	merges = append(merges, intervals.Interval{Low: 19, High: 32})
 
 	return demo{Intervals: itvls, ExpectedGaps: gaps, ExpectedOverlaps: overlaps, ExpectedMerges: merges}
 }

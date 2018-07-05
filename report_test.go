@@ -1,4 +1,4 @@
-package interval_test
+package intervals_test
 
 import (
 	"fmt"
@@ -14,41 +14,41 @@ func TestReport(t *testing.T) {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := true
-	itvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	itvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	var err error
-	err = itvls.AddInterval(&interval.Interval{Low: 5, High: 7})
+	err = itvls.AddInterval(&intervals.Interval{Low: 5, High: 7})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	err = itvls.AddInterval(&interval.Interval{Low: 2, High: 4})
+	err = itvls.AddInterval(&intervals.Interval{Low: 2, High: 4})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	err = itvls.AddInterval(&interval.Interval{Low: 3, High: 6})
+	err = itvls.AddInterval(&intervals.Interval{Low: 3, High: 6})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	err = itvls.AddInterval(&interval.Interval{Low: 18, High: 20})
+	err = itvls.AddInterval(&intervals.Interval{Low: 18, High: 20})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	err = itvls.AddInterval(&interval.Interval{Low: 20, High: 30})
+	err = itvls.AddInterval(&intervals.Interval{Low: 20, High: 30})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	err = itvls.AddInterval(&interval.Interval{Low: 25, High: 28})
+	err = itvls.AddInterval(&intervals.Interval{Low: 25, High: 28})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
-	err = itvls.AddInterval(&interval.Interval{Low: 30, High: 32})
+	err = itvls.AddInterval(&intervals.Interval{Low: 30, High: 32})
 	if err != nil {
 		fmt.Printf("invalid interval discarded: %v\n", err)
 	}
 
 	tt := []struct {
 		name  string
-		itvls interval.Intervals
+		itvls intervals.Intervals
 	}{
 		{name: "normal case", itvls: itvls},
 	}

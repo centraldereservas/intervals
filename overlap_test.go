@@ -1,4 +1,4 @@
-package interval_test
+package intervals_test
 
 import (
 	"testing"
@@ -67,8 +67,8 @@ func TestOverlapped(t *testing.T) {
 	demo312 := buildIntervalsDemo312()
 	tt := []struct {
 		name             string
-		intvls           interval.Intervals
-		expectedOverlaps []interval.Interval
+		intvls           intervals.Intervals
+		expectedOverlaps []intervals.Interval
 	}{
 		{name: "demo001", intvls: demo001.Intervals, expectedOverlaps: demo001.ExpectedOverlaps},
 		{name: "demo002", intvls: demo002.Intervals, expectedOverlaps: demo002.ExpectedOverlaps},

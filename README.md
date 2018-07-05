@@ -46,7 +46,7 @@ API documentation is available on [godoc.org][doc].
 To use this package the first thing we have to do is create an instance:
 
 ```go
-intvls := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+intvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 ```
 
 where `minLow` and `maxHigh` are integers that defines the accepted integer space to work with, anything else outside will be rejected. The booleans `lowInclusive` and `highInclusive` indicates if the values of a range (low, high) are inclusive or not. The booleans `selfAdjustMinLow`and `selfAdjustMaxHigh` indicates that we do not need to specify the minLow or maxHigh in the constructor, but those values will be self adjusted automatically taking the lower and greatest value  respectively of all intervals added.
@@ -63,7 +63,7 @@ Once initialized, we can proced to add new intervals.
 We can add intervals by passing an `Interval` object:
 
 ```go
-intvl := &interval.Interval{Low: ageFrom, High: ageTo, Object: myObject}
+intvl := &intervals.Interval{Low: ageFrom, High: ageTo, Object: myObject}
 err := intvls.AddInterval(intvl)
 if err != nil {
    fmt.Printf("invalid interval discarded: %v\n", err)

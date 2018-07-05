@@ -20,9 +20,9 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not read %s: %v", filename, err)
 	}
-	intervals := initIntervals(xys)
-	ip := interval.NewPlot(intervals.IsLowInclusive(), intervals.IsHighInclusive())
-	err = ip.PlotData("out.png", intervals, true, true, true, true)
+	intvls := initIntervals(xys)
+	ip := intervals.NewPlot(intvls.IsLowInclusive(), intvls.IsHighInclusive())
+	err = ip.PlotData("out.png", intvls, true, true, true, true)
 	if err != nil {
 		log.Fatalf("could not plot data: %v", err)
 	}
@@ -59,7 +59,7 @@ func readData(path string) ([]xy, error) {
 	return xys, nil
 }
 
-func initIntervals(xys []xy) interval.Intervals {
+func initIntervals(xys []xy) intervals.Intervals {
 	// initialize Intervals
 	minLow := MinX
 	maxHigh := MaxX
@@ -67,13 +67,13 @@ func initIntervals(xys []xy) interval.Intervals {
 	highInclusive := true
 	selfAdjustMinLow := false
 	selfAdjustMaxHigh := true
-	intervals := interval.NewIntervals(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
+	intvls := intervals.New(minLow, maxHigh, lowInclusive, highInclusive, selfAdjustMinLow, selfAdjustMaxHigh)
 
 	for _, xy := range xys {
-		err := intervals.AddInterval(&interval.Interval{Low: xy.x, High: xy.y})
+		err := intvls.AddInterval(&intervals.Interval{Low: xy.x, High: xy.y})
 		if err != nil {
 			fmt.Printf("invalid interval discarded: %v\n", err)
 		}
 	}
-	return intervals
+	return intvls
 }
